@@ -446,9 +446,9 @@ function TrainerCard({ trainer }) {
                         </span>
                     ))}
                 </div>
-                <hr className="border-0 h-px bg-gray-500 my-2" />
+                <hr className="border-0 h-px bg-gray-300 my-2" />
                 <div className="flex items-center justify-between mt-auto pt-4">
-                    <button className="bg-blue-600 text-white  font-semibold text-sm px-4 py-2 rounded-xl hover:bg-blue-600 hover:text-white transition-all duration-200 group-hover:shadow-sm">
+                    <button className="bg-blue-500 text-white  font-semibold text-sm px-4 py-2 rounded-xl hover:bg-blue-600 hover:text-white transition-all duration-200 group-hover:shadow-sm">
                         View Profile
                     </button>
 
