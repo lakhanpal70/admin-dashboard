@@ -1,6 +1,12 @@
 "use client";
 import { useState } from "react";
-import { Facebook, Twitter, Linkedin, Youtube, Instagram } from "lucide-react";
+import {
+  Facebook,
+  Twitter,
+  Linkedin,
+  Youtube,
+  Instagram,
+} from "lucide-react";
 
 export default function Footer() {
   const [checked, setChecked] = useState(false);
@@ -64,7 +70,7 @@ export default function Footer() {
                   <li key={i}>
                     <a
                       href="#"
-                      className="hover:text-white hover:font-bold hover:underline transition-all duration-200"
+                      className="hover:text-white hover:font-bold no-underline hover:no-underline transition-all duration-200"
                     >
                       {item}
                     </a>
@@ -87,7 +93,7 @@ export default function Footer() {
                 <li key={i}>
                   <a
                     href="#"
-                    className="hover:text-white hover:font-bold hover:underline transition-all duration-200"
+                    className="hover:text-white hover:font-bold no-underline hover:no-underline transition-all duration-200"
                   >
                     {item}
                   </a>
@@ -121,15 +127,21 @@ export default function Footer() {
 
           {/* Social Icons */}
           <div className="flex gap-4 mt-6 mb-8">
-            {[Facebook, Twitter, Linkedin, Youtube, Instagram].map((Icon, i) => (
-              <div
-                key={i}
-                className="w-11 h-10 flex items-center justify-center rounded-full bg-white text-[#114FA3] shadow-md cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#072043] hover:text-white hover:scale-110 hover:shadow-xl"
-              >
-                <Icon size={18} />
-              </div>
-            ))}
-          </div>
+  {[
+    { icon: Facebook, color: "#1877F2" },
+    { icon: Twitter, color: "#1DA1F2" },
+    { icon: Linkedin, color: "#0A66C2" },
+    { icon: Youtube, color: "#FF0000" },
+    { icon: Instagram, color: "#E4405F" },
+  ].map(({ icon: Icon, color }, i) => (
+    <div
+      key={i}
+      className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-md"
+    >
+      <Icon size={24} color={color} strokeWidth={2.3} />
+    </div>
+  ))}
+</div>
 
           {/* reCAPTCHA-style checkbox */}
           <div

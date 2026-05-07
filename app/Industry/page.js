@@ -193,15 +193,14 @@ function TrainerCard({ trainer }) {
       </span>
     ))}
   </div>
-<div className="flex items-end justify-between mt-4">
-  <button className="border border-blue-600 text-blue-600 font-semibold text-sm px-4 py-2 rounded-xl hover:bg-blue-600 hover:text-white transition-all duration-200 group-hover:shadow-sm">
+<hr className="border-0 h-px bg-gray-500 my-3" />
+<div className="flex items-center justify-between mt-4">
+  <button className="bg-blue-600 text-white font-semibold text-sm px-4 py-2 rounded-xl hover:bg-blue-600 hover:text-white transition-all duration-200 group-hover:shadow-sm">
     View Profile
   </button>
 
   <div className="text-right">
-   
-
-    <p className="text-sm text-gray-500 mt-1">
+    <p className="text-sm text-gray-500">
       {trainer.experience}
     </p>
   </div>
