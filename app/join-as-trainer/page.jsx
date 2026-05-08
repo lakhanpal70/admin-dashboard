@@ -103,6 +103,8 @@ const styles = `
      padding:26px 22px; overflow:hidden; z-index:50;
      overflow-y:auto;
   align-self:flex-start;   
+     border-radius:18px;
+
   }
   .tt-sidebar::before { content:''; position:absolute; top:-70px; right:-60px; width:210px; height:210px; border-radius:50%; background:rgba(255,255,255,0.06); animation:orbFloat 7s ease-in-out infinite; }
   .tt-sidebar::after  { content:''; position:absolute; bottom:30px; left:-55px; width:170px; height:170px; border-radius:50%; background:rgba(99,102,241,0.16); animation:orbFloat 9s ease-in-out infinite reverse; }
