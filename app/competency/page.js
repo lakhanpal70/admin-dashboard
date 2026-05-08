@@ -453,8 +453,6 @@ function TrainerCard({ trainer }) {
                     </button>
 
                     <div className="text-right">
-
-
                         <p className="text-sm text-gray-500 ">
                             {trainer.experience}
                         </p>

@@ -1714,7 +1714,7 @@ export default function WorkshopsPage() {
                   onMouseEnter={e => { e.currentTarget.style.background = '#f97316'; e.currentTarget.style.color = 'white'; }}
                   onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#f97316'; }}
                 >
-                  Become a Trainer <ArrowRight size={14} />
+                  Join as a Trainer <ArrowRight size={14} />
                 </button>
               </div>
             </div>

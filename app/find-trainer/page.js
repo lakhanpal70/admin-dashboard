@@ -140,7 +140,7 @@ const TrainerCard = ({ trainer, index }) => {
             onMouseEnter={e => { e.currentTarget.style.background = "#eff6ff"; }}
             onMouseLeave={e => { e.currentTarget.style.background = "white"; }}
           >
-            View Profile
+            Profile Section
           </button>
           <div className="text-xs text-right" style={{ color: "#64748b" }}>
             <div className="flex items-center gap-1 justify-end">

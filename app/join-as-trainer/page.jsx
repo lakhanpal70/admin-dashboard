@@ -81,15 +81,28 @@ const COUNTRIES = Object.keys(LOCATION_DATA).sort();
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+.tt-wrap *,
+.tt-wrap *::before,
+.tt-wrap *::after {
+  box-sizing:border-box;
+}
 
-  .tt-wrap { display:flex; height:100vh; width:100%; font-family:'Inter',sans-serif; background:#eef2ff; }
+  .tt-wrap { display:flex;
+  align-items:flex-start;
+  min-height:100vh; width:100%;
+   font-family:'Inter',sans-serif; background:#eef2ff;
+   overflow:hidden; 
+    padding:20px 24px 10px;
+   }
 
   /* ══ SIDEBAR ══ */
   .tt-sidebar {
-    width:290px; min-width:290px; height:100vh; position:fixed; top:0; left:0;
+    width:290px; min-width:290px; height: calc(100vh - 100px); position:sticky; top:0;
     background:linear-gradient(160deg,#1d4ed8 0%,#1e3a8a 55%,#312e81 100%);
-    display:flex; flex-direction:column; padding:26px 22px; overflow:hidden; z-index:50;
+    display:flex; flex-direction:column;
+     padding:26px 22px; overflow:hidden; z-index:50;
+     overflow-y:auto;
+  align-self:flex-start;   
   }
   .tt-sidebar::before { content:''; position:absolute; top:-70px; right:-60px; width:210px; height:210px; border-radius:50%; background:rgba(255,255,255,0.06); animation:orbFloat 7s ease-in-out infinite; }
   .tt-sidebar::after  { content:''; position:absolute; bottom:30px; left:-55px; width:170px; height:170px; border-radius:50%; background:rgba(99,102,241,0.16); animation:orbFloat 9s ease-in-out infinite reverse; }
@@ -117,7 +130,15 @@ const styles = `
   @keyframes fadeUp { from{opacity:0;transform:translateY(13px)} to{opacity:1;transform:translateY(0)} }
 
   /* ══ MAIN ══ */
-  .tt-main { margin-left:290px; width:calc(100% - 290px); height:100vh; overflow-y:auto; background:#eef2ff; padding:32px 38px 60px; }
+  .tt-main { 
+   flex:1;
+  min-width:0;
+  overflow-y:auto; background:#eef2ff;
+   padding:0 8px 60px;
+    overflow-x:hidden;
+      height:calc(100vh - 114px);
+
+   }
   .tt-main::-webkit-scrollbar { width:5px; }
   .tt-main::-webkit-scrollbar-thumb { background:#c7d2fe; border-radius:99px; }
 
