@@ -134,14 +134,14 @@ const TrainerCard = ({ trainer, index }) => {
 
         {/* Footer */}
         <div className="flex items-center justify-between mt-3 pt-3 border-t" style={{ borderColor: "#dbeafe" }}>
-          <button
+         <a href="/profile"><button
             className="text-xs px-3 py-1.5 rounded-lg font-semibold transition-all duration-200"
             style={{ border: "1.5px solid #bfdbfe", color: "#1d4ed8", background: "white" }}
             onMouseEnter={e => { e.currentTarget.style.background = "#eff6ff"; }}
             onMouseLeave={e => { e.currentTarget.style.background = "white"; }}
           >
             Profile Section
-          </button>
+          </button></a> 
           <div className="text-xs text-right" style={{ color: "#64748b" }}>
             <div className="flex items-center gap-1 justify-end">
               <svg className="w-3 h-3 flex-shrink-0" style={{ color: "#93c5fd" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
