@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo, useRef, useEffect } from "react";
-
+import Link from "next/link";
 const trainersData = [
   { id: 1, name: "Rahul Sharma", title: "Sales Strategist", company: "HubSpot", rating: 4.9, reviews: 140, experience: "6+ years", price: 40, location: "Mumbai, India", skills: ["B2B Sales", "Lead Generation", "CRM", "Negotiation"], category: "Sales", online: true, topRated: true, verified: true, availableThisWeek: true, offersTrial: true, image: "/Images/trainee2.png" },
   { id: 2, name: "Ankit Verma", title: "Business Development Manager", company: "Zoho", rating: 4.7, reviews: 90, experience: "5+ years", price: 35, location: "Delhi, India", skills: ["Client Acquisition", "Cold Calling", "Sales Funnel"], category: "Sales", online: true, topRated: false, verified: true, availableThisWeek: true, offersTrial: true, image: "/Images/trainee2.png" },
@@ -134,14 +134,16 @@ const TrainerCard = ({ trainer, index }) => {
 
         {/* Footer */}
         <div className="flex items-center justify-between mt-3 pt-3 border-t" style={{ borderColor: "#dbeafe" }}>
-         <a href="/profile"><button
+          <Link href="/profile">
+          <button
             className="text-xs px-3 py-1.5 rounded-lg font-semibold transition-all duration-200"
             style={{ border: "1.5px solid #bfdbfe", color: "#1d4ed8", background: "white" }}
             onMouseEnter={e => { e.currentTarget.style.background = "#eff6ff"; }}
             onMouseLeave={e => { e.currentTarget.style.background = "white"; }}
           >
-            Profile Section
-          </button></a> 
+            View Profile
+          </button>
+          </Link>
           <div className="text-xs text-right" style={{ color: "#64748b" }}>
             <div className="flex items-center gap-1 justify-end">
               <svg className="w-3 h-3 flex-shrink-0" style={{ color: "#93c5fd" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -158,7 +160,7 @@ const TrainerCard = ({ trainer, index }) => {
   );
 };
 
-/* ── Top Rated Section 
+// ── Top Rated Section
 const TopRatedSection = ({ trainers }) => {
   const scrollRef = useRef(null);
   const topRated = trainers.filter((t) => t.topRated).slice(0, 9);
@@ -211,7 +213,7 @@ const TopRatedSection = ({ trainers }) => {
       </div>
     </div>
   );
-};── */
+};
 
 /* ── Sidebar Filter Panel ── */
 const FilterSidebar = ({ ratingFilter, setRatingFilter, priceRange, setPriceRange, experienceFilter,
@@ -263,7 +265,9 @@ onChange={() =>
           </label>
         ))}
       </div>
-
+      
+    
+        
       {/* Price */}
       <div className="mb-5">
         <h3 className="text-xs font-bold uppercase tracking-wider mb-2.5" style={{ color: "#264bb0" }}>Price / Hour</h3>
@@ -370,8 +374,14 @@ export default function FindTrainersPage() {
       const q = searchQuery.toLowerCase();
       result = result.filter((t) => t.name.toLowerCase().includes(q) || t.title.toLowerCase().includes(q) || t.skills.some((s) => s.toLowerCase().includes(q)));
     }
-    if (ratingFilter !== null) result = result.filter((t) => t.rating >= ratingFilter);
-    result = result.filter((t) => t.price >= priceRange[0] && t.price <= priceRange[1]);
+    if (ratingFilter !== null) {result = result.filter((t) => t.rating >= ratingFilter);}
+    if (priceRange[1] < 200) {
+  result = result.filter(
+    (t) =>
+      Number(t.price) >= Number(priceRange[0]) &&
+      Number(t.price) <= Number(priceRange[1])
+  );
+}
     if (experienceFilter.length > 0) result = result.filter((t) => { const yrs = parseInt(t.experience) || 0; return experienceFilter.some((ef) => { const [min, max] = expToYears(ef); return yrs >= min && yrs <= max; }); });
     if (selectedSkills.length > 0) result = result.filter((t) => selectedSkills.some((sk) => t.skills.includes(sk) || t.category === sk));
     if (verifiedOnly) result = result.filter((t) => t.verified);

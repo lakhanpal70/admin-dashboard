@@ -532,6 +532,8 @@ export default function JoinTrainee() {
     };
 
     return (
+      <>
+   
       <div className="col-3">
         <div className="tt-field">
           <label className="tt-label">
@@ -572,6 +574,8 @@ export default function JoinTrainee() {
           </div>
         </div>
       </div>
+     
+       </>
     );
   }
 
@@ -819,6 +823,7 @@ function Field({ label, icon, placeholder }) {
         <input type="text" placeholder={placeholder} className="tt-input" />
       </div>
     </div>
+    
   );
 }
 
@@ -836,6 +841,8 @@ function Sel({ label, icon, options }) {
           {options.map((o, i) => <option key={i}>{o}</option>)}
         </select>
       </div>
+      
     </div>
-  );
+   
+  ); 
 }
