@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { Facebook, Twitter, Linkedin, Youtube, Instagram } from "lucide-react";
+import Link from "next/link";
 
 export default function Footer() {
   const [checked, setChecked] = useState(false);
@@ -27,7 +28,13 @@ export default function Footer() {
     "Corporate Training",
     "Technical Skills",
   ];
-
+const socialIcons = [
+  { Icon: Facebook, color: "hover:bg-blue-600" },
+  { Icon: Twitter, color: "hover:bg-sky-400" },
+  { Icon: Linkedin, color: "hover:bg-blue-700" },
+  { Icon: Youtube, color: "hover:bg-red-600" },
+  { Icon: Instagram, color: "hover:bg-pink-500" },
+];
   return (
     <footer className="bg-[#114FA3] text-white">
       {/* Main grid */}
@@ -58,20 +65,24 @@ export default function Footer() {
           {/* Company */}
           <div>
             <h4 className="text-lg font-semibold mb-4 sm:mb-6">Company</h4>
-            <ul className="space-y-2 sm:space-y-3 text-[14px] sm:text-[15px] text-gray-200">
-              {["About", "Courses", "Mentors", "SiteMap", "Privacy Policy"].map(
-                (item, i) => (
-                  <li key={i}>
-                    <a
-                      href="#"
-                      className="hover:text-white hover:font-bold hover:underline transition-all duration-200"
-                    >
-                      {item}
-                    </a>
-                  </li>
-                )
-              )}
-            </ul>
+        <ul className="space-y-2 sm:space-y-3 text-[14px] sm:text-[15px] text-gray-200">
+  {[
+    { name: "About", link: "/about" },
+    { name: "Courses", link: "#" },
+    { name: "Mentors", link: "#" },
+    { name: "SiteMap", link: "#" },
+    { name: "Privacy Policy", link: "/privacy-policy" },
+  ].map((item, i) => (
+    <li key={i}>
+      <a
+        href={item.link}
+        className="hover:text-white hover:font-bold transition-all duration-200"
+      >
+        {item.name}
+      </a>
+    </li>
+  ))}
+</ul>
           </div>
 
           {/* Links */}
@@ -82,12 +93,12 @@ export default function Footer() {
                 "Contact Us",
                 "FAQ's",
                 "Terms and Conditions",
-                "Student Review",
+                "Trainers Review",
               ].map((item, i) => (
                 <li key={i}>
                   <a
                     href="#"
-                    className="hover:text-white hover:font-bold hover:underline transition-all duration-200"
+                    className="hover:text-white hover:font-bold  transition-all duration-200"
                   >
                     {item}
                   </a>
@@ -120,16 +131,16 @@ export default function Footer() {
           </div>
 
           {/* Social Icons */}
-          <div className="flex gap-4 mt-6 mb-8">
-            {[Facebook, Twitter, Linkedin, Youtube, Instagram].map((Icon, i) => (
-              <div
-                key={i}
-                className="w-11 h-10 flex items-center justify-center rounded-full bg-white text-[#114FA3] shadow-md cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#072043] hover:text-white hover:scale-110 hover:shadow-xl"
-              >
-                <Icon size={18} />
-              </div>
-            ))}
-          </div>
+        <div className="flex gap-4 mt-6 mb-8">
+  {socialIcons.map(({ Icon, color }, i) => (
+    <div
+      key={i}
+      className={`w-11 h-10 flex items-center justify-center rounded-full bg-white text-[#114FA3] shadow-md cursor-pointer transition-all duration-300 ease-in-out hover:text-white hover:scale-110 hover:shadow-xl ${color}`}
+    >
+      <Icon size={18} />
+    </div>
+  ))}
+</div>
 
           {/* reCAPTCHA-style checkbox */}
           <div
