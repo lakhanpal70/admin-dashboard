@@ -1,8 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { PDFDownloadLink } from "@react-pdf/renderer";
-import { TrainerPDFDocument } from "./TrainerProfilePdf";
 import { useState, useEffect, useRef } from "react";
 import {
   Phone, MapPin, Mail, Linkedin, Twitter, Youtube, Globe,
@@ -12,9 +10,7 @@ import {
   GraduationCap, Trophy, Send, Camera, Zap,
 } from "lucide-react";
 import Footer from "../components/footer";
-
-// ── PDF — loaded only in browser, never on server ────────────────────────────
-
+import DownloadButton from "./DownloadButton";
 
 // ─── Animation Hook ───────────────────────────────────────────────────────────
 function useInView(threshold = 0.15) {
@@ -218,7 +214,6 @@ function AnimatedBackground() {
 // ─── Main Component ───────────────────────────────────────────────────────────
 export default function Profile() {
   const [scrolled, setScrolled] = useState(false);
-  const [pdfReady, setPdfReady] = useState(false);
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 20);
@@ -226,41 +221,19 @@ export default function Profile() {
     return () => window.removeEventListener("scroll", handler);
   }, []);
 
-  useEffect(() => {
-    setPdfReady(true);
-  }, []);
-
   return (
     <>
       <AnimatedBackground />
 
       <div
-        id="pdf-content"
         className="min-h-screen relative"
         style={{ position: "relative", zIndex: 1, fontFamily: "var(--font-geist-sans, 'Geist Sans', sans-serif)", background: "transparent" }}
       >
         {/* ── Hero Banner ── */}
         <div className="relative overflow-hidden w-full max-w-7xl mx-auto bg-gradient-to-br from-blue-900 via-blue-800 to-blue-600">
 
-          {/* ── Download Button — PDFDownloadLink replaces the old button ── */}
-          {pdfReady && (
-            <PDFDownloadLink
-              document={<TrainerPDFDocument />}
-              fileName="Karan_Malhotra_Profile.pdf"
-              className="absolute top-3 right-3 mr-10 md:top-4 md:right-4 z-10 flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur border border-white/50 hover:bg-blue-800 text-white text-sm font-medium transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95"
-            >
-              {({ loading }) =>
-                loading ? (
-                  <span className="text-xs text-white">Preparing…</span>
-                ) : (
-                  <>
-                    <Download size={15} />
-                    <span className="hidden sm:inline text-xs">Download PDF</span>
-                  </>
-                )
-              }
-            </PDFDownloadLink>
-          )}
+          {/* ── Download Button ── */}
+          <DownloadButton />
 
           {/* Decorative blobs */}
           <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />

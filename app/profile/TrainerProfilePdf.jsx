@@ -1,5 +1,5 @@
 import {
-  Document, Page, Text, View, StyleSheet, Link,Image
+  Document, Page, Text, View, StyleSheet, Link,
 } from "@react-pdf/renderer";
 
 const C = {
@@ -15,19 +15,12 @@ const C = {
 
 const styles = StyleSheet.create({
   page: { fontFamily: "Helvetica", fontSize: 10, color: C.dark, backgroundColor: C.white, paddingHorizontal: 40, paddingVertical: 36 },
-  header: { marginBottom: 20, borderBottomWidth: 2, borderBottomColor: C.primary, paddingBottom: 16, flexDirection: "row",          
-  justifyContent: "space-between", 
-  alignItems: "flex-start", },
+  header: { marginBottom: 20, borderBottomWidth: 2, borderBottomColor: C.primary, paddingBottom: 16 },
   name: { fontSize: 26, fontFamily: "Helvetica-Bold", color: C.dark, marginBottom: 4 },
   headline: { fontSize: 12, color: C.primary, marginBottom: 6, fontFamily: "Helvetica-Bold" },
-  logo: { 
-  width: 80,   // adjust to your logo's size
-  height: 80, 
-  objectFit: "contain" 
-},
   tagline: { fontSize: 10, color: C.muted, marginBottom: 12 },
   contactRow: { flexDirection: "row", flexWrap: "wrap", gap: 14, marginTop: 8 },
-  contactItem: { fontSize: 9,marginTop:1, color: C.muted },
+  contactItem: { fontSize: 9, color: C.muted },
   statsRow: { flexDirection: "row", justifyContent: "space-between", backgroundColor: C.lightBg, borderRadius: 6, padding: 12, marginBottom: 18 },
   statBox: { alignItems: "center", flex: 1 },
   statValue: { fontSize: 16, fontFamily: "Helvetica-Bold", color: C.primary },
@@ -142,27 +135,16 @@ export function TrainerPDFDocument() {
     <Document title={`${t.name} - Trainer Profile`} author={t.name}>
       <Page size="A4" style={styles.page}>
 
-       <View style={styles.header}>
-
-  {/* LEFT — existing content, now wrapped in a View */}
-  <View style={{ flex: 1 }}>
-    <Text style={styles.name}>{t.name}</Text>
-    <Text style={styles.headline}>{t.headline}</Text>
-    <Text style={styles.tagline}>{t.tagline}</Text>
-    <View style={styles.contactRow}>
-      <Text style={styles.contactItem}>Phone: {t.phone}</Text>
-      <Text style={styles.contactItem}>  |  Location: {t.location}</Text>
-      <Text style={styles.contactItem}>  |  Email: {t.email}</Text>
-    </View>
-  </View>
-
-  {/* RIGHT — your logo */}
-  <Image
-    style={{ width: 80, height: 80, objectFit: "contain" }}
-    src="/icon.png"   
-  />
-
-</View>
+        <View style={styles.header}>
+          <Text style={styles.name}>{t.name}</Text>
+          <Text style={styles.headline}>{t.headline}</Text>
+          <Text style={styles.tagline}>{t.tagline}</Text>
+          <View style={styles.contactRow}>
+            <Text style={styles.contactItem}>Phone: {t.phone}</Text>
+            <Text style={styles.contactItem}>  |  Location: {t.location}</Text>
+            <Text style={styles.contactItem}>  |  Email: {t.email}</Text>
+          </View>
+        </View>
 
         <View style={styles.statsRow}>
           {t.stats.map((s, i) => (
