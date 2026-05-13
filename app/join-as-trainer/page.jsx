@@ -8,13 +8,8 @@ import {
   DollarSign, Plane, Languages, Star,
   Upload, FileText, CheckCircle, Building2, Camera, ChevronDown
 } from "lucide-react";
-<<<<<<< HEAD
-import Navbar from "../components/Navbar";
-import Footer from "../components/footer";
-=======
 import { createPortal } from "react-dom";
 
->>>>>>> abc59070672bd4d755510fc257a89ab561c0606b
 const LOCATION_DATA = {
   India: {
     Maharashtra: ["Mumbai", "Pune", "Nagpur", "Nashik", "Aurangabad", "Solapur", "Thane"],

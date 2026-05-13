@@ -134,25 +134,16 @@ const TrainerCard = ({ trainer, index }) => {
 
         {/* Footer */}
         <div className="flex items-center justify-between mt-3 pt-3 border-t" style={{ borderColor: "#dbeafe" }}>
-<<<<<<< HEAD
           <Link href="/profile">
           <button
-=======
-         <a href="/profile"><button
->>>>>>> abc59070672bd4d755510fc257a89ab561c0606b
             className="text-xs px-3 py-1.5 rounded-lg font-semibold transition-all duration-200"
             style={{ border: "1.5px solid #bfdbfe", color: "#1d4ed8", background: "white" }}
             onMouseEnter={e => { e.currentTarget.style.background = "#eff6ff"; }}
             onMouseLeave={e => { e.currentTarget.style.background = "white"; }}
           >
-<<<<<<< HEAD
             View Profile
           </button>
           </Link>
-=======
-            Profile Section
-          </button></a> 
->>>>>>> abc59070672bd4d755510fc257a89ab561c0606b
           <div className="text-xs text-right" style={{ color: "#64748b" }}>
             <div className="flex items-center gap-1 justify-end">
               <svg className="w-3 h-3 flex-shrink-0" style={{ color: "#93c5fd" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -169,7 +160,7 @@ const TrainerCard = ({ trainer, index }) => {
   );
 };
 
-/* ── Top Rated Section 
+// ── Top Rated Section
 const TopRatedSection = ({ trainers }) => {
   const scrollRef = useRef(null);
   const topRated = trainers.filter((t) => t.topRated).slice(0, 9);
@@ -222,7 +213,7 @@ const TopRatedSection = ({ trainers }) => {
       </div>
     </div>
   );
-};── */
+};
 
 /* ── Sidebar Filter Panel ── */
 const FilterSidebar = ({ ratingFilter, setRatingFilter, priceRange, setPriceRange, experienceFilter,
@@ -245,49 +236,6 @@ const FilterSidebar = ({ ratingFilter, setRatingFilter, priceRange, setPriceRang
       </div>
 
       {/* Rating */}
-<<<<<<< HEAD
-     <div className="mb-5">
-  <h3
-    className="text-xs font-bold uppercase tracking-wider mb-2.5"
-    style={{ color: "#264bb0" }}
-  >
-    Rating
-  </h3>
-
-  {[4.5, 4.0, 3.5, 3.0].map((r) => (
-    <label
-      key={r}
-      className="flex items-center gap-2 mb-2 cursor-pointer"
-    >
-      <input
-        type="radio"
-        name="rating"
-        value={r}
-        checked={Number(ratingFilter) === Number(r)}
-        onChange={(e) => setRatingFilter(Number(e.target.value))}
-        className="w-4 h-4 cursor-pointer"
-        style={{ accentColor: "#1e3a8a" }}
-      />
-
-      <span className="text-xs" style={{ color: "#475569" }}>
-        {r} & above
-      </span>
-
-      <div className="flex gap-0.5 ml-auto">
-        {[1, 2, 3, 4, 5].map((s) => (
-          <svg
-            key={s}
-            className={`w-3 h-3 ${
-              s <= Math.floor(r)
-                ? "text-amber-400"
-                : "text-blue-100"
-            }`}
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-          </svg>
-=======
       <div className="mb-5">
         <h3 className="text-xs font-bold uppercase tracking-wider mb-2.5" style={{ color: "#264bb0" }}>Rating</h3>
         {[4.5, 4.0, 3.5, 3.0].map((r) => (
@@ -315,12 +263,11 @@ onChange={() =>
               ))}
             </div>
           </label>
->>>>>>> abc59070672bd4d755510fc257a89ab561c0606b
         ))}
       </div>
-    </label>
-  ))}
-</div>
+      
+    
+        
       {/* Price */}
       <div className="mb-5">
         <h3 className="text-xs font-bold uppercase tracking-wider mb-2.5" style={{ color: "#264bb0" }}>Price / Hour</h3>
