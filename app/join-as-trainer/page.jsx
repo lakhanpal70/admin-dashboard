@@ -8,6 +8,8 @@ import {
   DollarSign, Plane, Languages, Star,
   Upload, FileText, CheckCircle, Building2, Camera, ChevronDown
 } from "lucide-react";
+import Navbar from "../components/Navbar";
+import Footer from "../components/footer";
 const LOCATION_DATA = {
   India: {
     Maharashtra: ["Mumbai", "Pune", "Nagpur", "Nashik", "Aurangabad", "Solapur", "Thane"],
@@ -337,6 +339,8 @@ export default function JoinTrainee() {
     };
 
     return (
+      <>
+   
       <div className="col-3">
         <div className="tt-field">
           <label className="tt-label">
@@ -377,6 +381,8 @@ export default function JoinTrainee() {
           </div>
         </div>
       </div>
+     
+       </>
     );
   }
 
@@ -624,6 +630,7 @@ function Field({ label, icon, placeholder }) {
         <input type="text" placeholder={placeholder} className="tt-input" />
       </div>
     </div>
+    
   );
 }
 
@@ -641,6 +648,8 @@ function Sel({ label, icon, options }) {
           {options.map((o, i) => <option key={i}>{o}</option>)}
         </select>
       </div>
+      
     </div>
-  );
+   
+  ); 
 }

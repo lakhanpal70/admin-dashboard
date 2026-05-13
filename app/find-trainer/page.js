@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo, useRef, useEffect } from "react";
-
+import Link from "next/link";
 const trainersData = [
   { id: 1, name: "Rahul Sharma", title: "Sales Strategist", company: "HubSpot", rating: 4.9, reviews: 140, experience: "6+ years", price: 40, location: "Mumbai, India", skills: ["B2B Sales", "Lead Generation", "CRM", "Negotiation"], category: "Sales", online: true, topRated: true, verified: true, availableThisWeek: true, offersTrial: true, image: "/Images/trainee2.png" },
   { id: 2, name: "Ankit Verma", title: "Business Development Manager", company: "Zoho", rating: 4.7, reviews: 90, experience: "5+ years", price: 35, location: "Delhi, India", skills: ["Client Acquisition", "Cold Calling", "Sales Funnel"], category: "Sales", online: true, topRated: false, verified: true, availableThisWeek: true, offersTrial: true, image: "/Images/trainee2.png" },
@@ -134,6 +134,7 @@ const TrainerCard = ({ trainer, index }) => {
 
         {/* Footer */}
         <div className="flex items-center justify-between mt-3 pt-3 border-t" style={{ borderColor: "#dbeafe" }}>
+          <Link href="/profile">
           <button
             className="text-xs px-3 py-1.5 rounded-lg font-semibold transition-all duration-200"
             style={{ border: "1.5px solid #bfdbfe", color: "#1d4ed8", background: "white" }}
@@ -142,6 +143,7 @@ const TrainerCard = ({ trainer, index }) => {
           >
             View Profile
           </button>
+          </Link>
           <div className="text-xs text-right" style={{ color: "#64748b" }}>
             <div className="flex items-center gap-1 justify-end">
               <svg className="w-3 h-3 flex-shrink-0" style={{ color: "#93c5fd" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -232,23 +234,52 @@ const FilterSidebar = ({ ratingFilter, setRatingFilter, priceRange, setPriceRang
       </div>
 
       {/* Rating */}
-      <div className="mb-5">
-        <h3 className="text-xs font-bold uppercase tracking-wider mb-2.5" style={{ color: "#264bb0" }}>Rating</h3>
-        {[4.5, 4.0, 3.5, 3.0].map((r) => (
-          <label key={r} className="flex items-center gap-2 mb-2 cursor-pointer">
-            <input type="radio" name="rating" checked={ratingFilter === r} onChange={() => setRatingFilter(ratingFilter === r ? null : r)} className="w-3.5 h-3.5" style={{ accentColor: "#1e3a8a" }} />
-            <span className="text-xs" style={{ color: "#475569" }}>{r} & above</span>
-            <div className="flex gap-0.5 ml-auto">
-              {[1,2,3,4,5].map((s) => (
-                <svg key={s} className={`w-3 h-3 ${s <= r ? "text-amber-400" : "text-blue-100"}`} fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-              ))}
-            </div>
-          </label>
+     <div className="mb-5">
+  <h3
+    className="text-xs font-bold uppercase tracking-wider mb-2.5"
+    style={{ color: "#264bb0" }}
+  >
+    Rating
+  </h3>
+
+  {[4.5, 4.0, 3.5, 3.0].map((r) => (
+    <label
+      key={r}
+      className="flex items-center gap-2 mb-2 cursor-pointer"
+    >
+      <input
+        type="radio"
+        name="rating"
+        value={r}
+        checked={Number(ratingFilter) === Number(r)}
+        onChange={(e) => setRatingFilter(Number(e.target.value))}
+        className="w-4 h-4 cursor-pointer"
+        style={{ accentColor: "#1e3a8a" }}
+      />
+
+      <span className="text-xs" style={{ color: "#475569" }}>
+        {r} & above
+      </span>
+
+      <div className="flex gap-0.5 ml-auto">
+        {[1, 2, 3, 4, 5].map((s) => (
+          <svg
+            key={s}
+            className={`w-3 h-3 ${
+              s <= Math.floor(r)
+                ? "text-amber-400"
+                : "text-blue-100"
+            }`}
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+          </svg>
         ))}
       </div>
-
+    </label>
+  ))}
+</div>
       {/* Price */}
       <div className="mb-5">
         <h3 className="text-xs font-bold uppercase tracking-wider mb-2.5" style={{ color: "#264bb0" }}>Price / Hour</h3>
@@ -355,8 +386,14 @@ export default function FindTrainersPage() {
       const q = searchQuery.toLowerCase();
       result = result.filter((t) => t.name.toLowerCase().includes(q) || t.title.toLowerCase().includes(q) || t.skills.some((s) => s.toLowerCase().includes(q)));
     }
-    if (ratingFilter !== null) result = result.filter((t) => t.rating >= ratingFilter);
-    result = result.filter((t) => t.price >= priceRange[0] && t.price <= priceRange[1]);
+    if (ratingFilter !== null) {result = result.filter((t) => t.rating >= ratingFilter);}
+    if (priceRange[1] < 200) {
+  result = result.filter(
+    (t) =>
+      Number(t.price) >= Number(priceRange[0]) &&
+      Number(t.price) <= Number(priceRange[1])
+  );
+}
     if (experienceFilter.length > 0) result = result.filter((t) => { const yrs = parseInt(t.experience) || 0; return experienceFilter.some((ef) => { const [min, max] = expToYears(ef); return yrs >= min && yrs <= max; }); });
     if (selectedSkills.length > 0) result = result.filter((t) => selectedSkills.some((sk) => t.skills.includes(sk) || t.category === sk));
     if (verifiedOnly) result = result.filter((t) => t.verified);
