@@ -263,16 +263,36 @@ export default function Profile() {
           <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
           <div className="absolute bottom-0 left-0 w-72 h-72 bg-blue-300/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
 
-          <div className="relative max-w-6xl mx-auto px-4 pt-10 pb-10">
-            <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
+          <div className="relative max-w-6xl mx-auto px-4 pt-6 pb-10">
+            <div className="flex flex-col md:flex-row items-start gap-6">
 
-              {/* Avatar */}
-              <div className="relative flex-shrink-0">
-                <div className="w-28 h-28 md:w-36 md:h-36 rounded-2xl bg-gradient-to-br from-blue-300 to-blue-500 flex items-center justify-center ring-4 ring-white/20 overflow-hidden shadow-2xl">
-                  <Image src="/Images/trainee1.png" alt="Trainer" width={150} height={150} className="w-full h-full object-cover" />
+              {/* ── CHANGE 1: Avatar column with social icons stacked below ── */}
+              <div className="flex flex-col items-center gap-4 flex-shrink-0">
+                {/* Avatar — aligned to top with name */}
+                <div className="relative">
+                  <div className="w-28 h-28 md:w-36 md:h-36 rounded-2xl bg-gradient-to-br from-blue-300 to-blue-500 flex items-center justify-center ring-4 ring-white/20 overflow-hidden shadow-2xl">
+                    <Image src="/Images/trainee1.png" alt="Trainer" width={150} height={150} className="w-full h-full object-cover" />
+                  </div>
+                  <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-green-400 rounded-full flex items-center justify-center ring-2 ring-white">
+                    <CheckCircle2 size={16} className="text-white" />
+                  </div>
                 </div>
-                <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-green-400 rounded-full flex items-center justify-center ring-2 ring-white">
-                  <CheckCircle2 size={16} className="text-white" />
+
+                {/* Social icons directly below avatar */}
+                <div className="flex items-center gap-2 flex-wrap justify-center">
+                  {[
+                    { Icon: Linkedin, color: "hover:bg-blue-600", label: "LinkedIn" },
+                    { Icon: Twitter, color: "hover:bg-sky-500", label: "Twitter" },
+                    { Icon: Youtube, color: "hover:bg-red-500", label: "YouTube" },
+                    { Icon: Globe, color: "hover:bg-blue-500", label: "Website" },
+                  ].map(({ Icon, color, label }, i) => (
+                    <button key={i} aria-label={label} className={`w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white transition-all duration-200 hover:scale-110 ${color}`}>
+                      <Icon size={15} />
+                    </button>
+                  ))}
+                  <button aria-label="WhatsApp" className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white transition-all duration-200 hover:scale-110 hover:bg-green-500">
+                    <WhatsAppIcon size={15} />
+                  </button>
                 </div>
               </div>
 
@@ -280,9 +300,7 @@ export default function Profile() {
               <div className="flex-1">
                 <h1 className="text-3xl md:text-4xl font-bold text-white">Karan Malhotra</h1>
 
-                {/* ── Contact details moved below name ── */}
                 <div className="flex flex-wrap items-center gap-4 text-sm text-blue-200 mt-2 mb-2">
-                
                   <span className="flex items-center gap-1.5 hover:text-white transition-colors cursor-pointer">
                     <MapPin size={13} /> Bengaluru, Karnataka
                   </span>
@@ -331,27 +349,8 @@ export default function Profile() {
             </div>
           </div>
 
-          {/* Contact Bar — social icons only */}
-          <div className="border-t border-white/10 bg-blue-900/40 backdrop-blur-sm">
-            <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-end gap-3">
-              <div className="flex items-center gap-3">
-                {[
-                  { Icon: Linkedin, color: "hover:bg-blue-600", label: "LinkedIn" },
-                  { Icon: Twitter, color: "hover:bg-sky-500", label: "Twitter" },
-                  { Icon: Youtube, color: "hover:bg-red-500", label: "YouTube" },
-                  { Icon: Globe, color: "hover:bg-blue-500", label: "Website" },
-                ].map(({ Icon, color, label }, i) => (
-                  <button key={i} aria-label={label} className={`w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white transition-all duration-200 hover:scale-110 ${color}`}>
-                    <Icon size={15} />
-                  </button>
-                ))}
-                {/* WhatsApp icon */}
-                <button aria-label="WhatsApp" className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white transition-all duration-200 hover:scale-110 hover:bg-green-500">
-                  <WhatsAppIcon size={15} />
-                </button>
-              </div>
-            </div>
-          </div>
+          {/* ── CHANGE 1: Contact bar below hero — social icons REMOVED from here ── */}
+          {/* The bar is kept only if you need other content; otherwise can be removed entirely */}
         </div>
 
         {/* ── Main Content ── */}
@@ -361,6 +360,7 @@ export default function Profile() {
             {/* ── Left Column ── */}
             <div className="flex-1 space-y-6">
 
+              {/* About Me */}
               <FadeIn>
                 <Card>
                   <SectionHeader icon={Users} title="About Me" />
@@ -371,9 +371,21 @@ export default function Profile() {
                 </Card>
               </FadeIn>
 
+              {/* ── CHANGE 3: Testimonials moved here, right after About Me ── */}
+              <FadeIn delay={80}>
+                <Card>
+                  <SectionHeader icon={MessageSquare} title="What People Say" linkText="View All" />
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <Testimonial quote="Karan's session on Agile Leadership was transformative. Very engaging and practical!" name="Priya Sharma" role="Delivery Head, Infosys" delay={0} />
+                    <Testimonial quote="One of the best trainers I have attended. Real-world examples and case studies made it so impactful." name="Rahul Mehta" role="Project Manager, TCS" delay={120} />
+                  </div>
+                </Card>
+              </FadeIn>
+
+              {/* ── CHANGE 2: Profile details — single column, one by one ── */}
               <FadeIn delay={100}>
                 <Card>
-                  <div className="grid sm:grid-cols-2 gap-6">
+                  <div className="flex flex-col divide-y divide-blue-50">
                     {[
                       { icon: Building2, title: "Industry", value: "IT & Software, BFSI, Manufacturing, Healthcare, Education, Startups" },
                       { icon: Target, title: "Competency", value: "Leadership Development, Agile Transformation, Team Effectiveness, Change Management" },
@@ -381,7 +393,7 @@ export default function Profile() {
                       { icon: Briefcase, title: "Trainer Type", value: "Corporate Trainer | Leadership Coach | Facilitator" },
                       { icon: TrendingUp, title: "Commercials Charged", value: "Rs. 75,000 - 1,50,000 / Workshop (Customizable as per need)" },
                     ].map(({ icon: Icon, title, value }, i) => (
-                      <div key={i} className="flex gap-3">
+                      <div key={i} className="flex gap-3 py-4 first:pt-0 last:pb-0">
                         <div className="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0 mt-0.5">
                           <Icon size={17} className="text-blue-600" />
                         </div>
@@ -431,7 +443,7 @@ export default function Profile() {
                     </div>
                   </div>
 
-                  {/* ── Training Certifications sub-section ── */}
+                  {/* Training Certifications sub-section */}
                   <div className="mt-6 pt-5 border-t border-blue-100">
                     <div className="flex items-center gap-2 mb-4">
                       <div className="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center">
@@ -453,15 +465,7 @@ export default function Profile() {
                 </Card>
               </FadeIn>
 
-              <FadeIn delay={300}>
-                <Card>
-                  <SectionHeader icon={MessageSquare} title="What People Say" linkText="View All" />
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <Testimonial quote="Karan's session on Agile Leadership was transformative. Very engaging and practical!" name="Priya Sharma" role="Delivery Head, Infosys" delay={0} />
-                    <Testimonial quote="One of the best trainers I have attended. Real-world examples and case studies made it so impactful." name="Rahul Mehta" role="Project Manager, TCS" delay={120} />
-                  </div>
-                </Card>
-              </FadeIn>
+              {/* ── CHANGE 3: Testimonials REMOVED from here (moved above) ── */}
 
             </div>
 
@@ -483,7 +487,6 @@ export default function Profile() {
                 <Card>
                   <SectionHeader icon={Play} title="Featured Video" />
                   <div className="space-y-3">
-                    {/* Video embed placeholder */}
                     <div className="relative w-full rounded-xl overflow-hidden bg-blue-950 aspect-video group cursor-pointer">
                       <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
                         <div className="w-14 h-14 rounded-full bg-white/20 border-2 border-white/40 flex items-center justify-center group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
@@ -491,14 +494,12 @@ export default function Profile() {
                         </div>
                         <span className="text-xs text-blue-200 mt-1">Watch Preview</span>
                       </div>
-                      {/* Decorative gradient overlay */}
                       <div className="absolute inset-0 bg-gradient-to-br from-blue-800/60 via-blue-900/40 to-blue-950/80" />
                       <div className="absolute bottom-0 left-0 right-0 p-3 z-10">
                         <p className="text-xs font-semibold text-white leading-snug">Agile Leadership Masterclass — Introduction</p>
                         <p className="text-xs text-blue-300 mt-0.5">12:45 mins</p>
                       </div>
                     </div>
-                    {/* Additional video thumbnails */}
                     {[
                       { title: "Design Thinking for Teams", duration: "8:20 mins" },
                       { title: "Emotional Intelligence at Work", duration: "10:05 mins" },
@@ -511,6 +512,30 @@ export default function Profile() {
                         <div className="flex flex-col justify-center">
                           <p className="text-sm font-medium text-blue-900 group-hover:text-blue-700 transition-colors leading-snug">{v.title}</p>
                           <p className="text-xs text-blue-400 mt-0.5">{v.duration}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </Card>
+              </FadeIn>
+
+              <FadeIn delay={210}>
+                <Card>
+                  <SectionHeader icon={Globe} title="Global Market Knowledge" />
+                  <div className="space-y-1">
+                    {[
+                      { label: "Asian Market", detail: "Japan, South Korea, Hong Kong, Sri Lanka, Bangladesh, Nepal, Bhutan" },
+                      { label: "South East Asia", detail: "Singapore, Malaysia, Thailand, Indonesia, Vietnam, Philippines" },
+                      { label: "Middle East", detail: "UAE, Saudi Arabia, Qatar, Oman, Kuwait, Bahrain" },
+                      { label: "Australia & New Zealand", detail: null },
+                      { label: "US & Canada Market", detail: null },
+                      { label: "UK & Europe", detail: null },
+                    ].map(({ label, detail }, i) => (
+                      <div key={i} className="flex items-start gap-3 py-2.5 border-b border-blue-50 last:border-0">
+                        <Star size={15} className="fill-yellow-400 text-yellow-400 flex-shrink-0 mt-0.5" />
+                        <div>
+                          <p className="text-sm font-medium text-blue-900 leading-snug">{label}</p>
+                          {detail && <p className="text-xs text-blue-400 mt-0.5 leading-snug">{detail}</p>}
                         </div>
                       </div>
                     ))}
@@ -571,7 +596,6 @@ export default function Profile() {
                   </div>
                 </Card>
               </FadeIn>
-
 
             </div>
           </div>
