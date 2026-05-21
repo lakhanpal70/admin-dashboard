@@ -8,7 +8,7 @@ import {
   Languages, MessageSquare, Download, ExternalLink,
   CheckCircle2, TrendingUp, Lightbulb, Target, Building2,
   GraduationCap, Trophy, Send, Camera, Zap, Play, ShieldCheck,
-  Facebook, Instagram,
+  Facebook, Instagram, Share2,
 } from "lucide-react";
 import Footer from "../components/footer";
 import DownloadButton from "./DownloadButton";
@@ -233,8 +233,23 @@ function AnimatedBackground() {
 function WhatsAppIcon({ size = 15 }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
     </svg>
+  );
+}
+
+function ShareButton() {
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({ title: "Karan Malhotra – Agile Coach", text: "Check out this trainer profile", url: window.location.href });
+    } else {
+      navigator.clipboard?.writeText(window.location.href);
+    }
+  };
+  return (
+    <button onClick={handleShare} aria-label="Share" className="w-9 h-9 rounded-full bg-white/15 backdrop-blur-sm border border-white/25 flex items-center justify-center text-white hover:bg-white/25 transition-all duration-200 shadow-md">
+      <Share2 size={15} />
+    </button>
   );
 }
 
@@ -258,86 +273,74 @@ export default function Profile() {
     { Icon: Instagram, color: "hover:bg-pink-500",  label: "Instagram" },
   ];
 
+  const waClass = "absolute -bottom-1 -right-1 w-8 h-8 md:w-9 md:h-9 bg-green-500 rounded-full flex items-center justify-center ring-2 ring-white hover:bg-green-600 transition-colors shadow-md z-10";
+
   return (
     <>
       <AnimatedBackground />
 
-      <div
-        className="min-h-screen relative"
-        style={{ position: "relative", zIndex: 1, fontFamily: "var(--font-geist-sans, 'Geist Sans', sans-serif)", background: "transparent" }}
-      >
+      <div className="min-h-screen relative" style={{ position: "relative", zIndex: 1, fontFamily: "var(--font-geist-sans, 'Geist Sans', sans-serif)", background: "transparent" }}>
+
         {/* ── Hero Banner ── */}
         <div className="relative overflow-hidden w-full max-w-7xl mx-auto bg-gradient-to-br from-blue-900 via-blue-800 to-blue-600">
-
-          <DownloadButton />
-
           <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
           <div className="absolute bottom-0 left-0 w-72 h-72 bg-blue-300/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
 
           <div className="relative max-w-6xl mx-auto px-4 pt-6 pb-10">
-            
-            {/* Main Flex Wrapper: Column on mobile, Row on Desktop */}
             <div className="flex flex-col md:flex-row items-stretch md:items-start gap-6">
 
-              {/* TOP LAYOUT CONTAINER FOR MOBILE (Image Left, Social Icons Right) */}
-              <div className="flex flex-row items-center justify-between md:flex-col md:justify-start gap-4 flex-shrink-0 w-full md:w-auto">
+              {/* Left block: Avatar + Social Icons */}
+              <div className="relative flex flex-row items-center justify-between md:flex-col md:justify-start gap-4 flex-shrink-0 w-full md:w-auto">
 
-                {/* Avatar Wrapper with absolute WhatsApp tag */}
+                {/* Mobile: Download + Share pinned to top-right corner */}
+                <div className="flex items-center gap-3 md:hidden absolute top-0 right-0">
+                  <ShareButton />
+                  {/* <DownloadButton /> */}
+                </div>
+
+                {/* Avatar */}
                 <div className="relative flex-shrink-0">
                   <div className="w-24 h-24 md:w-36 md:h-36 rounded-2xl bg-gradient-to-br from-blue-300 to-blue-500 flex items-center justify-center ring-4 ring-white/20 overflow-hidden shadow-2xl">
-                    <Image
-                      src="/Images/trainee1.png"
-                      alt="Trainer"
-                      width={150}
-                      height={150}
-                      className="w-full h-full object-cover"
-                    />
+                    <Image src="/Images/trainee1.png" alt="Trainer" width={150} height={150} className="w-full h-full object-cover" />
                   </div>
-
-                  {/* WhatsApp button positioned at bottom right corner */}
-                  <a
-                    href="https://wa.me/919876543210"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="WhatsApp"
-                    className="absolute -bottom-1 -right-1 w-8 h-8 md:w-9 md:h-9 bg-green-500 rounded-full flex items-center justify-center ring-2 ring-white hover:bg-green-600 transition-colors shadow-md z-10"
-                  >
+                  <a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className={waClass}>
                     <WhatsAppIcon size={16} />
                   </a>
                 </div>
 
-                {/* Social Icons Container (Flows naturally onto the right on mobile, below image on desktop) */}
-                <div className="flex flex-col gap-2 items-end md:items-center">
+                {/* Social Icons — mobile: centered below avatar area, desktop: centered under avatar */}
+                <div className="flex flex-col gap-2 items-center md:items-center mr-16 md:mr-0 -mt-8 md:mt-0">
                   {/* Row 1 */}
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 justify-center">
                     {socialRow1.map(({ Icon, color, label }, i) => (
-                      <button
-                        key={i}
-                        aria-label={label}
-                        className={`w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white transition-all duration-200 hover:scale-110 ${color}`}
-                      >
+                      <button key={i} aria-label={label} className={`w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white transition-all duration-200 hover:scale-110 ${color}`}>
                         <Icon size={15} />
                       </button>
                     ))}
                   </div>
                   {/* Row 2 */}
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 justify-center">
                     {socialRow2.map(({ Icon, color, label }, i) => (
-                      <button
-                        key={i}
-                        aria-label={label}
-                        className={`w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white transition-all duration-200 hover:scale-110 ${color}`}
-                      >
+                      <button key={i} aria-label={label} className={`w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white transition-all duration-200 hover:scale-110 ${color}`}>
                         <Icon size={15} />
                       </button>
                     ))}
                   </div>
                 </div>
+
               </div>
 
-              {/* ── Lower Details Block on Mobile, Flows Side-by-Side on Desktop ── */}
+              {/* Right block: Name, stats, tags */}
               <div className="flex-1 min-w-0 mt-2 md:mt-0">
-                <h1 className="text-3xl md:text-4xl font-bold text-white">Karan Malhotra</h1>
+                {/* Name row with Download/Share on desktop only */}
+                <div className="flex items-start justify-between gap-2">
+                  <h1 className="text-3xl md:text-4xl font-bold text-white">Karan Malhotra</h1>
+                  {/* Download + Share — desktop only */}
+                  <div className="hidden md:flex items-center gap-4 flex-shrink-0 -mt-3">
+                    <ShareButton />
+                    <DownloadButton />
+                  </div>
+                </div>
 
                 <div className="flex flex-wrap items-center gap-4 text-sm text-blue-200 mt-2 mb-2">
                   <span className="flex items-center gap-1.5 hover:text-white transition-colors cursor-pointer">
@@ -375,17 +378,6 @@ export default function Profile() {
                 </div>
               </div>
 
-              {/* Company Badge */}
-              {/* <div className="absolute bottom-4 right-4 z-10 hidden sm:block">
-                <div className="flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2 rounded-xl shadow-lg">
-                  <Building2 size={16} className="text-white" />
-                  <div className="flex flex-col leading-tight">
-                    <span className="text-xs text-blue-200">Currently at</span>
-                    <span className="text-sm font-semibold text-white">Elevate Learning Solutions</span>
-                  </div>
-                </div>
-              </div> */}
-
             </div>
           </div>
         </div>
@@ -397,7 +389,6 @@ export default function Profile() {
             {/* ── Left Column ── */}
             <div className="flex-1 space-y-6">
 
-              {/* About Me */}
               <FadeIn>
                 <Card>
                   <SectionHeader icon={Users} title="About Me" />
@@ -408,7 +399,6 @@ export default function Profile() {
                 </Card>
               </FadeIn>
 
-              {/* Testimonials */}
               <FadeIn delay={80}>
                 <Card>
                   <SectionHeader icon={MessageSquare} title="What People Say" linkText="View All" />
@@ -419,7 +409,6 @@ export default function Profile() {
                 </Card>
               </FadeIn>
 
-              {/* Profile Details */}
               <FadeIn delay={100}>
                 <Card>
                   <div className="flex flex-col divide-y divide-blue-50">
@@ -444,7 +433,6 @@ export default function Profile() {
                 </Card>
               </FadeIn>
 
-              {/* Popular Workshops */}
               <FadeIn delay={150}>
                 <Card>
                   <SectionHeader icon={Zap} title="Popular Workshops" linkText="View All" />
@@ -456,7 +444,6 @@ export default function Profile() {
                 </Card>
               </FadeIn>
 
-              {/* Gallery */}
               <FadeIn delay={200}>
                 <Card>
                   <SectionHeader icon={Camera} title="Gallery" />
@@ -468,37 +455,54 @@ export default function Profile() {
                 </Card>
               </FadeIn>
 
-              {/* Milestones */}
               <FadeIn delay={250}>
                 <Card>
+                  <div className="mb-6 pb-6 border-b border-blue-100">
+                    <div className="flex items-center gap-2 mb-4">
+                      <div className="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center">
+                        <Trophy size={18} className="text-blue-700" />
+                      </div>
+                      <h2 className="text-lg font-semibold text-black">Awards & Recognition</h2>
+                    </div>
+                    <div className="relative">
+                      <div className="absolute top-5 left-[10%] right-[10%] h-0.5 bg-blue-100 hidden sm:block" />
+                      <div className="grid grid-cols-2 sm:grid-cols-5 gap-4 relative">
+                        <Milestone icon={Trophy}       label="Leadership Excellence Award" org="Elevate Learning"  year="2021" delay={0}   />
+                        <Milestone icon={Star}         label="Top Trainer of the Year"     org="ABP Awards"        year="2022" delay={80}  />
+                        <Milestone icon={Award}        label="Best Agile Coach"            org="Agile India"       year="2020" delay={160} />
+                        <Milestone icon={CheckCircle2} label="Excellence in L&D"          org="NASSCOM"           year="2023" delay={240} />
+                        <Milestone icon={TrendingUp}   label="Most Impactful Trainer"      org="LinkedIn Learning" year="2023" delay={320} />
+                      </div>
+                    </div>
+                  </div>
+
                   <SectionHeader icon={GraduationCap} title="Professional Experience" />
                   <div className="relative">
                     <div className="absolute top-5 left-[10%] right-[10%] h-0.5 bg-blue-100 hidden sm:block" />
                     <div className="grid grid-cols-2 sm:grid-cols-5 gap-4 relative">
-                      <Milestone icon={GraduationCap} label="MBA - HR" org="Symbiosis Institute of Management" year="2008" delay={0} />
-                      <Milestone icon={Award} label="Professional Scrum Trainer (PST)" org="Scrum.org" year="2016" delay={80} />
-                      <Milestone icon={CheckCircle2} label="Certified Agile Leadership Coach" org="ICAgle" year="2018" delay={160} />
-                      <Milestone icon={Trophy} label="Leadership Excellence Award" org="Elevate Learning" year="2021" delay={240} />
-                      <Milestone icon={Star} label="Top Trainer of the Year" org="ABP Awards" year="2022" delay={320} />
+                      <Milestone icon={GraduationCap} label="MBA - HR"                        org="Symbiosis Institute" year="2008" delay={0}   />
+                      <Milestone icon={Award}         label="Professional Scrum Trainer (PST)" org="Scrum.org"           year="2016" delay={80}  />
+                      <Milestone icon={CheckCircle2}  label="Certified Agile Leadership Coach" org="ICAgile"             year="2018" delay={160} />
+                      <Milestone icon={Briefcase}     label="Senior Agile Coach"               org="Elevate Learning"    year="2019" delay={240} />
+                      <Milestone icon={Users}         label="Head of L&D Practice"             org="Elevate Learning"    year="2023" delay={320} />
                     </div>
                   </div>
 
-                  {/* Education & Certifications  sub-section */}
                   <div className="mt-6 pt-5 border-t border-blue-100">
                     <div className="flex items-center gap-2 mb-4">
                       <div className="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center">
                         <ShieldCheck size={18} className="text-blue-700" />
                       </div>
-                      <h2 className="text-lg font-semibold text-black">Education & Certifications </h2>
+                      <h2 className="text-lg font-semibold text-black">Education & Certifications</h2>
                     </div>
                     <div className="relative">
                       <div className="absolute top-5 left-[10%] right-[10%] h-0.5 bg-blue-100 hidden sm:block" />
                       <div className="grid grid-cols-2 sm:grid-cols-5 gap-4 relative">
-                        <Milestone icon={ShieldCheck} label="Certified Scrum Master (CSM)" org="Scrum Alliance" year="2014" delay={0} />
-                        <Milestone icon={Award} label="Professional Scrum Trainer (PST)" org="Scrum.org" year="2016" delay={80} />
-                        <Milestone icon={CheckCircle2} label="Certified Agile Coach (ICP-ACC)" org="ICAgile" year="2018" delay={160} />
-                        <Milestone icon={ShieldCheck} label="DISC Certified Trainer" org="John Maxwell Team" year="2019" delay={240} />
-                        <Milestone icon={Star} label="Certified Design Thinking Facilitator" org="IDEO" year="2021" delay={320} />
+                        <Milestone icon={ShieldCheck}  label="Certified Scrum Master (CSM)"         org="Scrum Alliance"    year="2014" delay={0}   />
+                        <Milestone icon={Award}        label="Professional Scrum Trainer (PST)"      org="Scrum.org"         year="2016" delay={80}  />
+                        <Milestone icon={CheckCircle2} label="Certified Agile Coach (ICP-ACC)"       org="ICAgile"           year="2018" delay={160} />
+                        <Milestone icon={ShieldCheck}  label="DISC Certified Trainer"                org="John Maxwell Team" year="2019" delay={240} />
+                        <Milestone icon={Star}         label="Certified Design Thinking Facilitator" org="IDEO"              year="2021" delay={320} />
                       </div>
                     </div>
                   </div>
