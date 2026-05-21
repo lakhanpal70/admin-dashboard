@@ -43,7 +43,7 @@ export default function DownloadButton() {
         ) : (
           <>
             <Download size={15} />
-            <span className="hidden sm:inline text-xs">Download PDF</span>
+            <span className="hidden sm:inline text-xs">Download </span>
           </>
         )
       }

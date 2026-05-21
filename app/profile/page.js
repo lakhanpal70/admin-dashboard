@@ -292,13 +292,10 @@ export default function Profile() {
               {/* Left block: Avatar + Social Icons */}
               <div className="relative flex flex-row items-center justify-between md:flex-col md:justify-start gap-4 flex-shrink-0 w-full md:w-auto">
 
-                {/* Mobile: Download + Share pinned to top-right corner */}
                 <div className="flex items-center gap-3 md:hidden absolute top-0 right-0">
                   <ShareButton />
-                  {/* <DownloadButton /> */}
                 </div>
 
-                {/* Avatar */}
                 <div className="relative flex-shrink-0">
                   <div className="w-24 h-24 md:w-36 md:h-36 rounded-2xl bg-gradient-to-br from-blue-300 to-blue-500 flex items-center justify-center ring-4 ring-white/20 overflow-hidden shadow-2xl">
                     <Image src="/Images/trainee1.png" alt="Trainer" width={150} height={150} className="w-full h-full object-cover" />
@@ -308,9 +305,7 @@ export default function Profile() {
                   </a>
                 </div>
 
-                {/* Social Icons — mobile: centered below avatar area, desktop: centered under avatar */}
                 <div className="flex flex-col gap-2 items-center md:items-center mr-16 md:mr-0 -mt-8 md:mt-0">
-                  {/* Row 1 */}
                   <div className="flex items-center gap-2 justify-center">
                     {socialRow1.map(({ Icon, color, label }, i) => (
                       <button key={i} aria-label={label} className={`w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white transition-all duration-200 hover:scale-110 ${color}`}>
@@ -318,7 +313,6 @@ export default function Profile() {
                       </button>
                     ))}
                   </div>
-                  {/* Row 2 */}
                   <div className="flex items-center gap-2 justify-center">
                     {socialRow2.map(({ Icon, color, label }, i) => (
                       <button key={i} aria-label={label} className={`w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white transition-all duration-200 hover:scale-110 ${color}`}>
@@ -332,10 +326,8 @@ export default function Profile() {
 
               {/* Right block: Name, stats, tags */}
               <div className="flex-1 min-w-0 mt-2 md:mt-0">
-                {/* Name row with Download/Share on desktop only */}
                 <div className="flex items-start justify-between gap-2">
                   <h1 className="text-3xl md:text-4xl font-bold text-white">Karan Malhotra</h1>
-                  {/* Download + Share — desktop only */}
                   <div className="hidden md:flex items-center gap-4 flex-shrink-0 -mt-3">
                     <ShareButton />
                     <DownloadButton />
@@ -617,22 +609,17 @@ export default function Profile() {
                 </Card>
               </FadeIn>
 
+              {/* ── Languages Known — same box style as Companies Worked With ── */}
               <FadeIn delay={200}>
                 <Card>
                   <SectionHeader icon={Languages} title="Languages Known" />
-                  <div className="space-y-2">
-                    {[
-                      { lang: "English", level: 5 },
-                      { lang: "Hindi", level: 4 },
-                      { lang: "Kannada", level: 3 },
-                    ].map(({ lang, level }) => (
-                      <div key={lang} className="flex items-center justify-between py-2 border-b border-blue-50 last:border-0">
-                        <span className="text-sm text-blue-800">{lang}</span>
-                        <div className="flex gap-1">
-                          {[...Array(5)].map((_, i) => (
-                            <div key={i} className={`w-2 h-2 rounded-full ${i < level ? "bg-blue-500" : "bg-blue-100"}`} />
-                          ))}
-                        </div>
+                  <div className="grid grid-cols-3 gap-2">
+                    {["English", "Hindi", "Kannada"].map((lang) => (
+                      <div
+                        key={lang}
+                        className="flex items-center justify-center px-4 py-3 rounded-xl border border-blue-100 bg-white hover:border-blue-300 hover:shadow-md transition-all duration-200 cursor-pointer"
+                      >
+                        <span className="font-bold text-sm tracking-wide text-blue-600">{lang}</span>
                       </div>
                     ))}
                   </div>

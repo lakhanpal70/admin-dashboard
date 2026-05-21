@@ -523,94 +523,94 @@ function TrainerCard({ trainer, delay }) {
   );
 }
 
-export default function Trainer() {
-  const [visibleCount, setVisibleCount] = useState(4);
-  const [loading, setLoading] = useState(false);
+// export default function Trainer() {
+//   const [visibleCount, setVisibleCount] = useState(4);
+//   const [loading, setLoading] = useState(false);
 
-  const handleLoadMore = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setVisibleCount((prev) => Math.min(prev + 4, allTrainers.length));
-      setLoading(false);
-    }, 800);
-  };
+//   const handleLoadMore = () => {
+//     setLoading(true);
+//     setTimeout(() => {
+//       setVisibleCount((prev) => Math.min(prev + 4, allTrainers.length));
+//       setLoading(false);
+//     }, 800);
+//   };
 
-  const visibleTrainers = allTrainers.slice(0, visibleCount);
-  const hasMore = visibleCount < allTrainers.length;
+//   const visibleTrainers = allTrainers.slice(0, visibleCount);
+//   const hasMore = visibleCount < allTrainers.length;
 
-  return (
-    <>
-      <style>{styles}</style>
+//   return (
+//     <>
+//       <style>{styles}</style>
 
-      <section className="tr-section w-full px-4 sm:px-8 md:px-16 py-14 md:py-20">
-        <div className="tr-blob-1" />
-        <div className="tr-blob-2" />
+//       <section className="tr-section w-full px-4 sm:px-8 md:px-16 py-14 md:py-20">
+//         <div className="tr-blob-1" />
+//         <div className="tr-blob-2" />
 
-        <div className="max-w-7xl mx-auto relative z-10">
+//         <div className="max-w-7xl mx-auto relative z-10">
 
-          {/* Header */}
-          <div className="tr-fade-up flex flex-col sm:flex-row sm:items-end justify-between gap-5 mb-10">
-            <div>
-              <div className="tr-pill mb-4">
-                <span className="w-2 h-2 rounded-full bg-blue-500 tr-dot-pulse" />
-                Popular Trainers
-              </div>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 leading-tight">
-                Learn from <span className="tr-shimmer">Top Experts</span>
-              </h2>
-              <p className="text-gray-500 text-sm md:text-base mt-2 max-w-md">
-                Hand-picked trainers with verified credentials, real results, and thousands of happy learners.
-              </p>
-            </div>
+//           {/* Header */}
+//           <div className="tr-fade-up flex flex-col sm:flex-row sm:items-end justify-between gap-5 mb-10">
+//             <div>
+//               <div className="tr-pill mb-4">
+//                 <span className="w-2 h-2 rounded-full bg-blue-500 tr-dot-pulse" />
+//                 Popular Trainers
+//               </div>
+//               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 leading-tight">
+//                 Learn from <span className="tr-shimmer">Top Experts</span>
+//               </h2>
+//               <p className="text-gray-500 text-sm md:text-base mt-2 max-w-md">
+//                 Hand-picked trainers with verified credentials, real results, and thousands of happy learners.
+//               </p>
+//             </div>
 
-            <div className="flex gap-3 flex-wrap">
-              {[
-                { val: "1,200+", label: "Verified Trainers" },
-                { val: "4.9★",   label: "Avg. Rating" },
-              ].map((s) => (
-                <div
-                  key={s.label}
-                  className="bg-white/80 backdrop-blur border border-white/90 rounded-2xl px-4 py-3 shadow-sm text-center"
-                  style={{ minWidth: 100 }}
-                >
-                  <p className="text-base font-bold text-gray-800">{s.val}</p>
-                  <p className="text-xs text-gray-500 mt-0.5">{s.label}</p>
-                </div>
-              ))}
-            </div>
-          </div>
+//             <div className="flex gap-3 flex-wrap">
+//               {[
+//                 { val: "1,200+", label: "Verified Trainers" },
+//                 { val: "4.9★",   label: "Avg. Rating" },
+//               ].map((s) => (
+//                 <div
+//                   key={s.label}
+//                   className="bg-white/80 backdrop-blur border border-white/90 rounded-2xl px-4 py-3 shadow-sm text-center"
+//                   style={{ minWidth: 100 }}
+//                 >
+//                   <p className="text-base font-bold text-gray-800">{s.val}</p>
+//                   <p className="text-xs text-gray-500 mt-0.5">{s.label}</p>
+//                 </div>
+//               ))}
+//             </div>
+//           </div>
 
-          {/* Grid */}
-          <div className="tr-grid">
-            {visibleTrainers.map((trainer, i) => (
-              <TrainerCard
-                key={trainer.id}
-                trainer={trainer}
-                delay={i < 4 ? 0.1 + (i % 4) * 0.08 : 0}
-              />
-            ))}
-          </div>
+//           {/* Grid */}
+//           <div className="tr-grid">
+//             {visibleTrainers.map((trainer, i) => (
+//               <TrainerCard
+//                 key={trainer.id}
+//                 trainer={trainer}
+//                 delay={i < 4 ? 0.1 + (i % 4) * 0.08 : 0}
+//               />
+//             ))}
+//           </div>
 
-          {/* Load More */}
-          {hasMore && (
-            <div className="flex justify-center mt-10">
-              <button className="tr-load-btn" onClick={handleLoadMore} disabled={loading}>
-                {loading ? (
-                  <><Loader2 size={16} className="tr-spin" /> Loading...</>
-                ) : (
-                  <>Load More Trainers <ChevronRight size={16} /></>
-                )}
-              </button>
-            </div>
-          )}
+//           {/* Load More */}
+//           {hasMore && (
+//             <div className="flex justify-center mt-10">
+//               <button className="tr-load-btn" onClick={handleLoadMore} disabled={loading}>
+//                 {loading ? (
+//                   <><Loader2 size={16} className="tr-spin" /> Loading...</>
+//                 ) : (
+//                   <>Load More Trainers <ChevronRight size={16} /></>
+//                 )}
+//               </button>
+//             </div>
+//           )}
 
-          {!hasMore && visibleCount > 4 && (
-            <p className="text-center text-sm text-gray-400 mt-8">
-              You've seen all {allTrainers.length} trainers ✓
-            </p>
-          )}
-        </div>
-      </section>
-    </>
-  );
-}
+//           {!hasMore && visibleCount > 4 && (
+//             <p className="text-center text-sm text-gray-400 mt-8">
+//               You've seen all {allTrainers.length} trainers ✓
+//             </p>
+//           )}
+//         </div>
+//       </section>
+//     </>
+//   );
+// }
