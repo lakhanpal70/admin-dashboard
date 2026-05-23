@@ -51,7 +51,7 @@ const trainersData = {
             color: "from-blue-600 to-indigo-800",
             experience: "8+ years exp."
         },
-        
+
         {
             name: "Rohan Bhatia",
             role: "AI Workflow Automation Expert",
@@ -124,8 +124,8 @@ const trainersData = {
             color: "from-violet-600 to-blue-800",
             experience: "10+ years exp."
         },
-        
-       
+
+
         {
             name: "Neha Kapoor",
             role: "AI Transformation Expert",
@@ -466,6 +466,7 @@ export default function Industry() {
     const router = useRouter();
     const [activeIndustry, setActiveIndustry] = useState("AI Tools");
     const [city, setCity] = useState("");
+    const [competency, setCompetency] = useState("");
     const [price, setPrice] = useState("");
     const [experience, setExperience] = useState("");
     const [trainingType, setTrainingType] = useState("");
@@ -474,8 +475,8 @@ export default function Industry() {
     const [showExtra, setShowExtra] = useState(false);
     const trainers = trainersData[activeIndustry] || [];
     const displayed = showAll ? trainers : trainers.slice(0, 8);
-console.log(trainersData["AI Tools"].length);
-console.log(trainersData["AI Tools"]);
+    console.log(trainersData["AI Tools"].length);
+    console.log(trainersData["AI Tools"]);
     return (
         <div
             className="min-h-screen font-sans"
@@ -506,7 +507,7 @@ console.log(trainersData["AI Tools"]);
                     <p className="text-2xl sm:text-3xl font-extrabold text-blue-300 mb-8">By Competency</p>
 
                     {/* Industry Tabs */}
-                    <div className="flex flex-wrap mb-5 gap-4 sm:gap-6">
+                    {/* <div className="flex flex-wrap mb-5 gap-4 sm:gap-6">
                         {industries.map(ind => (
                             <button
                                 key={ind}
@@ -550,7 +551,7 @@ console.log(trainersData["AI Tools"]);
                                 </div>
                             )}
                         </div>
-                    </div>
+                    </div> */}
                 </div>
 
 
@@ -558,6 +559,31 @@ console.log(trainersData["AI Tools"]);
             {/* Search Bar */}
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 -mt-16">
                 <div className="bg-white rounded-2xl shadow-xl p-4 flex flex-wrap gap-3 items-end">
+                    {/* Competency */}
+                    <div className="flex-1 min-w-[150px]">
+                        <label className="block text-xs font-semibold text-gray-400 mb-1.5 uppercase tracking-wide">
+                            Competency
+                        </label>
+                        <div className="relative">
+                            <Brain className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                            <select
+                                value={competency}
+                                onChange={(e) => {
+                                    setCompetency(e.target.value);
+                                    if (e.target.value) {
+                                        setActiveIndustry(e.target.value);
+                                        setShowAll(false);
+                                    }
+                                }}
+                                className="w-full pl-9 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 appearance-none"
+                            >
+                                <option value=""> Competencies</option>
+                                {[...industries, ...extraIndustries].map((ind) => (
+                                    <option key={ind} value={ind}>{ind}</option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
 
                     <div className="flex-1 min-w-[140px]">
                         <label className="block text-xs font-semibold text-gray-400 mb-1.5 uppercase tracking-wide">City</label>

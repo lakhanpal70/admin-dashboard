@@ -390,6 +390,7 @@ export default function Industry() {
     "Logistics & Operational Efficiency",
   );
   const [city, setCity] = useState("");
+  const [department, setDepartment] = useState("");
   const [price, setPrice] = useState("");
   const [experience, setExperience] = useState("");
   const [trainingType, setTrainingType] = useState("");
@@ -432,7 +433,7 @@ export default function Industry() {
           </p>
 
           {/* Industry Tabs */}
-          <div className="flex flex-wrap mb-5 gap-4 sm:gap-6">
+          {/* <div className="flex flex-wrap mb-5 gap-4 sm:gap-6">
             {industries.map((ind) => (
               <button
                 key={ind}
@@ -487,12 +488,43 @@ export default function Industry() {
                 </div>
               )}
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
       {/* Search Bar */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 -mt-16">
         <div className="bg-white rounded-2xl shadow-xl p-4 flex flex-wrap gap-3 items-end">
+          <div className="flex-1 min-w-[150px]">
+            <label className="block text-xs font-semibold text-gray-400 mb-1.5 uppercase tracking-wide">
+              Department
+            </label>
+            <div className="relative">
+              <svg
+                className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"
+                fill="none" stroke="currentColor" viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                  d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+              </svg>
+              <select
+                value={department}
+                onChange={(e) => {
+                  setDepartment(e.target.value);
+                  if (e.target.value) {
+                    setActiveIndustry(e.target.value);
+                    setShowAll(false);
+                  }
+                }}
+                className="w-full pl-9 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 appearance-none"
+              >
+                <option value="">Departments</option>
+                {[...industries, ...extraIndustries].map((ind) => (
+                  <option key={ind} value={ind}>{ind}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
           <div className="flex-1 min-w-[140px]">
             <label className="block text-xs font-semibold text-gray-400 mb-1.5 uppercase tracking-wide">
               City
