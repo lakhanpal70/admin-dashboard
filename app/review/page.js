@@ -1,10 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
-  User, Building2, MapPin, Calendar, BookOpen,
+  User, MapPin, Calendar, BookOpen,
   Star, MessageSquare, ChevronRight, ChevronLeft,
   CheckCircle, Send, Edit2, Headphones, BarChart2,
-  Users, Shield, Clock, TrendingUp,
+  Users, Shield, Clock, TrendingUp, Phone,
 } from "lucide-react";
 
 const STEPS = [
@@ -13,29 +13,51 @@ const STEPS = [
   { id: 3, label: "Review & submit", shortLabel: "Review" },
 ];
 
-// ─── Star Rating (inline) ─────────────────────────────────────────────────────
-function InlineStars({ value, onChange }) {
+const RATING_LABELS = ["", "Poor", "Fair", "Good", "Great", "Excellent"];
+
+// ─── Star Rating ─────────────────────────────────────────────────────────────
+function StarRating({ value, onChange }) {
   const [hovered, setHovered] = useState(0);
   const display = hovered || value || 0;
+
   return (
-    <div className="flex gap-0.5 shrink-0">
-      {[1, 2, 3, 4, 5].map((star) => (
-        <button
-          key={star}
-          type="button"
-          onClick={() => onChange(star)}
-          onMouseEnter={() => setHovered(star)}
-          onMouseLeave={() => setHovered(0)}
-          className="focus:outline-none transition-transform duration-150 hover:scale-125 active:scale-110"
-        >
-          <Star
-            size={20}
-            fill={display >= star ? "#1d4ed8" : "none"}
-            stroke={display >= star ? "#1d4ed8" : "#93c5fd"}
-            className="transition-all duration-150"
-          />
-        </button>
-      ))}
+    <div className="flex flex-col items-center gap-2">
+      <div className="flex gap-1 sm:gap-2">
+        {[1, 2, 3, 4, 5].map((star) => (
+          <button
+            key={star}
+            type="button"
+            onClick={() => onChange(star)}
+            onMouseEnter={() => setHovered(star)}
+            onMouseLeave={() => setHovered(0)}
+            className="focus:outline-none transition-all duration-200 hover:scale-125 active:scale-110"
+            style={{
+              transform: display >= star ? "scale(1.18)" : "scale(1)",
+              animation: value === star ? "starPop 0.3s ease" : "none",
+            }}
+          >
+            <Star
+              size={28}
+              fill={display >= star ? "#1d4ed8" : "none"}
+              stroke={display >= star ? "#1d4ed8" : "#93c5fd"}
+              className="transition-all duration-200"
+            />
+          </button>
+        ))}
+      </div>
+      <div
+        className="flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium"
+        style={{
+          opacity: display > 0 ? 1 : 0,
+          transform: display > 0 ? "translateY(0) scale(1)" : "translateY(-6px) scale(0.9)",
+          transition: "opacity 0.25s ease, transform 0.25s ease",
+          minHeight: "24px",
+          pointerEvents: "none",
+          background: "rgba(219,234,254,0.9)",
+          border: "1px solid #93c5fd",
+          color: "#1e40af",
+        }}
+      />
     </div>
   );
 }
@@ -89,63 +111,71 @@ function StepIndicator({ current }) {
   );
 }
 
-// ─── Rating Row (always-visible stars + comment) ───────────────────────────────
-function RatingRow({ icon: Icon, title, description, rating, comment, onRating, onComment, delay }) {
+// ─── Compact Rating Row ───────────────────────────────────────────────────────
+function CompactRatingRow({ icon: Icon, title, description, rating, comment, onRating, onComment, delay }) {
+  const [expanded, setExpanded] = useState(false);
   return (
     <div
       className="rounded-2xl overflow-hidden animate-slideUp"
       style={{ border: "1px solid #bfdbfe", animationDelay: `${delay}ms` }}
     >
-      {/* Header: icon + title left | stars right */}
       <div
-        className="flex items-center justify-between px-3 pt-3 pb-2"
+        className="flex items-center justify-between p-3 sm:p-4 cursor-pointer"
         style={{ background: "linear-gradient(135deg,#eff6ff,#dbeafe)" }}
+        onClick={() => setExpanded((e) => !e)}
       >
-        <div className="flex items-center gap-2.5">
-          <div
-            className="p-1.5 bg-white rounded-lg shrink-0"
-            style={{ boxShadow: "0 2px 8px rgba(37,99,235,0.12)" }}
-          >
-            <Icon size={14} style={{ color: "#2563eb" }} />
+        <div className="flex items-center gap-3">
+          <div className="p-1.5 bg-white rounded-lg shadow-sm shrink-0" style={{ boxShadow: "0 2px 8px rgba(37,99,235,0.12)" }}>
+            <Icon size={16} style={{ color: "#2563eb" }} />
           </div>
           <div>
-            <p className="font-bold text-gray-800 text-sm leading-tight">{title}</p>
+            <p className="font-bold text-gray-800 text-sm">{title}</p>
             <p className="text-gray-500 text-xs">{description}</p>
           </div>
         </div>
-        <InlineStars value={rating} onChange={onRating} />
-      </div>
-
-      {/* Comment always visible below */}
-      <div className="px-3 pb-3 pt-2 bg-white">
-        <div className="relative">
-          <textarea
-            value={comment}
-            onChange={(e) => onComment(e.target.value)}
-            maxLength={500}
-            rows={1}
-            placeholder="Add a comment (optional)..."
-            className="w-full px-3 py-1.5 rounded-xl text-gray-700 text-xs resize-none transition-all duration-200 placeholder-gray-300"
-            style={{
-              border: "1px solid #bfdbfe",
-              background: "#eff6ff",
-              outline: "none",
-              lineHeight: "1.5",
-            }}
-            onFocus={(e) => {
-              e.target.style.boxShadow = "0 0 0 3px rgba(96,165,250,0.25)";
-              e.target.style.borderColor = "#60a5fa";
-              e.target.style.background = "#fff";
-            }}
-            onBlur={(e) => {
-              e.target.style.boxShadow = "none";
-              e.target.style.borderColor = "#bfdbfe";
-              e.target.style.background = "#eff6ff";
-            }}
+        <div className="flex items-center gap-2 shrink-0">
+          {rating !== null ? (
+            <div className="flex gap-0.5">
+              {[1,2,3,4,5].map((s) => (
+                <Star key={s} size={12} fill={s <= rating ? "#1d4ed8" : "none"} stroke={s <= rating ? "#1d4ed8" : "#bfdbfe"} />
+              ))}
+            </div>
+          ) : (
+            <span className="text-xs text-gray-400 italic">Rate</span>
+          )}
+          <ChevronRight
+            size={14}
+            style={{ color: "#93c5fd", transform: expanded ? "rotate(90deg)" : "rotate(0deg)", transition: "transform 0.2s" }}
           />
-          <span className="absolute bottom-2 right-3 text-[10px] text-gray-300">{comment.length}/500</span>
         </div>
       </div>
+      {expanded && (
+        <div className="p-3 sm:p-4 space-y-3" style={{ background: "#fff" }}>
+          <div className="flex justify-center">
+            <StarRating value={rating} onChange={onRating} />
+          </div>
+          <div>
+            <label className="text-xs font-bold tracking-widest text-gray-400 uppercase flex items-center gap-1.5 mb-1">
+              <MessageSquare size={10} /> Comment
+              <span className="font-normal normal-case">(optional)</span>
+            </label>
+            <div className="relative">
+              <textarea
+                value={comment}
+                onChange={(e) => onComment(e.target.value)}
+                maxLength={500}
+                rows={2}
+                placeholder="Share your thoughts..."
+                className="w-full px-3 py-2 rounded-xl text-gray-700 text-sm resize-none transition-all duration-200 placeholder-gray-300"
+                style={{ border: "1px solid #bfdbfe", background: "#eff6ff", outline: "none" }}
+                onFocus={(e) => { e.target.style.boxShadow = "0 0 0 3px rgba(96,165,250,0.25)"; e.target.style.borderColor = "#60a5fa"; e.target.style.background = "#fff"; }}
+                onBlur={(e) => { e.target.style.boxShadow = "none"; e.target.style.borderColor = "#bfdbfe"; e.target.style.background = "#eff6ff"; }}
+              />
+              <span className="absolute bottom-2 right-3 text-xs text-gray-300">{comment.length}/500</span>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -172,7 +202,7 @@ function ReviewRow({ num, label, rating, delay }) {
         {rating !== null ? (
           <div className="flex gap-0.5">
             {[1, 2, 3, 4, 5].map((s) => (
-              <Star key={s} size={12} fill={s <= rating ? "#1d4ed8" : "none"} stroke={s <= rating ? "#1d4ed8" : "#bfdbfe"} />
+              <Star key={s} size={12} fill={s <= rating ? "#1d4ed8" : "none"} stroke={s <= rating ? "#1d4ed8" : "#bfdbfe"} className="sm:w-3.5 sm:h-3.5" />
             ))}
           </div>
         ) : (
@@ -189,12 +219,22 @@ export default function FeedbackForm() {
   const [step, setStep] = useState(1);
   const [submitted, setSubmitted] = useState(false);
   const [animDir, setAnimDir] = useState("forward");
+
+  // OTP states
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpVerified, setOtpVerified] = useState(false);
+  const [otpInput, setOtpInput] = useState("");
+  const [otpError, setOtpError] = useState("");
+  const [otpLoading, setOtpLoading] = useState(false);
+  const [resendTimer, setResendTimer] = useState(0);
+  const [otpShake, setOtpShake] = useState(false);
+
   const [data, setData] = useState({
     reviewer: "",
     trainer: "",
-    company: "",
+    sessionDate: "",
     city: "",
-    date: "",
+    whatsapp: "",
     topic: "",
     overall:    { rating: null, comment: "" },
     delivery:   { rating: null, comment: "" },
@@ -212,7 +252,58 @@ export default function FeedbackForm() {
   const setSection = (section, field, value) =>
     setData((d) => ({ ...d, [section]: { ...d[section], [field]: value } }));
 
-  // ── Submitted Screen ────────────────────────────────────────────────────────
+  // Resend countdown timer
+  useEffect(() => {
+    if (resendTimer > 0) {
+      const t = setTimeout(() => setResendTimer((r) => r - 1), 1000);
+      return () => clearTimeout(t);
+    }
+  }, [resendTimer]);
+
+  // ── OTP Handlers ────────────────────────────────────────────────────────────
+  const handleSendOtp = () => {
+    setOtpLoading(true);
+    setOtpError("");
+    // TODO: Replace with your real backend API call
+    // e.g. fetch('/api/send-otp', { method: 'POST', body: JSON.stringify({ phone: data.whatsapp }) })
+    setTimeout(() => {
+      setOtpSent(true);
+      setOtpLoading(false);
+      setResendTimer(30);
+    }, 1200);
+  };
+
+  const handleVerifyOtp = () => {
+    if (otpInput.length < 4) {
+      setOtpError("Please enter the OTP sent to your WhatsApp.");
+      setOtpShake(true);
+      setTimeout(() => setOtpShake(false), 500);
+      return;
+    }
+    setOtpLoading(true);
+    setOtpError("");
+    // TODO: Replace with your real backend API call
+    // e.g. fetch('/api/verify-otp', { method: 'POST', body: JSON.stringify({ phone: data.whatsapp, code: otpInput }) })
+    setTimeout(() => {
+      if (otpInput === "123456") { // Replace this condition with real backend response
+        setOtpVerified(true);
+        setOtpError("");
+      } else {
+        setOtpError("Invalid OTP. Please try again.");
+        setOtpShake(true);
+        setTimeout(() => setOtpShake(false), 500);
+      }
+      setOtpLoading(false);
+    }, 1000);
+  };
+
+  const handleResend = () => {
+    setOtpInput("");
+    setOtpError("");
+    handleSendOtp();
+  };
+
+  // ── Submitted Screen with OTP ────────────────────────────────────────────────
   if (submitted) {
     return (
       <div
@@ -231,31 +322,101 @@ export default function FeedbackForm() {
           }
           @keyframes starFloat {
             0%, 100% { transform: translateY(0); }
-            50%       { transform: translateY(-5px); }
+            50%      { transform: translateY(-5px); }
           }
-          .anim-confetti    { animation: confettiPop 0.6s cubic-bezier(.34,1.56,.64,1) both; }
-          .anim-fade-up     { animation: fadeSlideUp 0.5s ease both; }
-          .anim-star-float  { animation: starFloat 2s ease-in-out infinite; }
+          @keyframes shake {
+            0%,100% { transform: translateX(0); }
+            20%     { transform: translateX(-7px); }
+            40%     { transform: translateX(7px); }
+            60%     { transform: translateX(-4px); }
+            80%     { transform: translateX(4px); }
+          }
+          @keyframes otpPulse {
+            0%,100% { box-shadow: 0 0 0 0 rgba(37,99,235,0.3); }
+            50%     { box-shadow: 0 0 0 8px rgba(37,99,235,0); }
+          }
+          @keyframes spin {
+            to { transform: rotate(360deg); }
+          }
+          .anim-confetti   { animation: confettiPop 0.6s cubic-bezier(.34,1.56,.64,1) both; }
+          .anim-fade-up    { animation: fadeSlideUp 0.5s ease both; }
+          .anim-star-float { animation: starFloat 2s ease-in-out infinite; }
+          .anim-shake      { animation: shake 0.45s ease; }
+          .anim-spin       { animation: spin 0.8s linear infinite; }
+          .otp-box {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 14px;
+            border: 2px solid #bfdbfe;
+            background: #eff6ff;
+            color: #1e3a8a;
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: 12px;
+            text-align: center;
+            outline: none;
+            transition: all 0.2s;
+          }
+          .otp-box:focus {
+            border-color: #3b82f6;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(96,165,250,0.25), 0 0 0 0 rgba(37,99,235,0.3);
+            animation: otpPulse 1.5s ease infinite;
+          }
+          .otp-box.error {
+            border-color: #f87171;
+            background: #fff1f2;
+          }
+          .otp-box.success {
+            border-color: #34d399;
+            background: #f0fdf4;
+          }
         `}</style>
+
         <div
-          className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl p-8 sm:p-12 max-w-md w-full text-center space-y-4 relative"
+          className="bg-white/85 backdrop-blur-xl rounded-3xl shadow-2xl p-7 sm:p-10 max-w-md w-full text-center space-y-5 relative"
           style={{ border: "1px solid rgba(147,197,253,0.6)", zIndex: 1 }}
         >
-          <div
-            className="w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center mx-auto anim-confetti"
-            style={{ background: "linear-gradient(135deg,#dbeafe,#93c5fd)" }}
-          >
-            <CheckCircle style={{ color: "#1d4ed8" }} size={36} />
+          {/* Icon */}
+          <div className="relative mx-auto w-fit">
+            <div
+              className="absolute inset-0 rounded-full"
+              style={{ background: "radial-gradient(circle, rgba(59,130,246,0.2) 0%, transparent 70%)", transform: "scale(1.8)" }}
+            />
+            <div
+              className="w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center mx-auto anim-confetti relative"
+              style={{ background: "linear-gradient(135deg,#dbeafe,#93c5fd)" }}
+            >
+              {otpVerified
+                ? <CheckCircle style={{ color: "#1d4ed8" }} size={36} />
+                : <Phone style={{ color: "#1d4ed8" }} size={32} />
+              }
+            </div>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 anim-fade-up" style={{ animationDelay: "100ms" }}>
-            Thank you!
-          </h2>
-          <p className="text-gray-500 text-sm anim-fade-up" style={{ animationDelay: "200ms" }}>
-            Your feedback has been submitted. It helps trainers improve every session.
-          </p>
-          {avg !== null && (
-            <div className="anim-fade-up" style={{ animationDelay: "350ms" }}>
-              <div className="flex justify-center gap-1 pt-2 anim-star-float">
+
+          {/* Title */}
+          <div className="anim-fade-up" style={{ animationDelay: "100ms" }}>
+            {otpVerified ? (
+              <>
+                <h2 className="text-2xl sm:text-3xl font-bold text-gray-800">Thank you!</h2>
+                <p className="text-gray-500 text-sm mt-1">
+                  Your feedback has been submitted. It helps trainers improve every session.
+                </p>
+              </>
+            ) : (
+              <>
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-800">Verify Your WhatsApp</h2>
+                <p className="text-gray-500 text-sm mt-1">
+                  We need to verify your number before finalising your submission.
+                </p>
+              </>
+            )}
+          </div>
+
+          {/* ── Stars (shown after verified) ── */}
+          {otpVerified && avg !== null && (
+            <div className="anim-fade-up" style={{ animationDelay: "200ms" }}>
+              <div className="flex justify-center gap-1 pt-1 anim-star-float">
                 {[1, 2, 3, 4, 5].map((s) => (
                   <Star key={s} size={22} fill={s <= Math.round(avg) ? "#1d4ed8" : "none"} stroke="#1d4ed8" />
                 ))}
@@ -263,24 +424,144 @@ export default function FeedbackForm() {
               <p className="font-bold text-xl mt-2" style={{ color: "#1d4ed8" }}>{avg.toFixed(1)} / 5</p>
             </div>
           )}
-          <button
-            onClick={() => {
-              setSubmitted(false);
-              setStep(1);
-              setData((d) => ({
-                ...d,
-                overall:    { rating: null, comment: "" },
-                delivery:   { rating: null, comment: "" },
-                content:    { rating: null, comment: "" },
-                engagement: { rating: null, comment: "" },
-                extra: "",
-              }));
-            }}
-            className="mt-4 px-6 py-2.5 rounded-xl text-sm font-semibold text-white transition-all duration-200 hover:opacity-90 active:scale-95 anim-fade-up"
-            style={{ background: "linear-gradient(135deg,#3b82f6,#1d4ed8)", animationDelay: "500ms" }}
-          >
-            Submit another
-          </button>
+
+          {/* ── OTP Section (shown before verified) ── */}
+          {!otpVerified && (
+            <div className="space-y-4 anim-fade-up" style={{ animationDelay: "200ms" }}>
+
+              {/* Number display */}
+              <div
+                className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-2xl mx-auto w-fit"
+                style={{ background: "linear-gradient(135deg,#eff6ff,#dbeafe)", border: "1px solid #bfdbfe" }}
+              >
+                <Phone size={14} style={{ color: "#2563eb" }} />
+                <span className="text-sm font-bold" style={{ color: "#1e3a8a" }}>
+                  {data.whatsapp || "+91 XXXXXXXXXX"}
+                </span>
+              </div>
+
+              {!otpSent ? (
+                /* Send OTP button */
+                <button
+                  onClick={handleSendOtp}
+                  disabled={otpLoading}
+                  className="w-full py-3 rounded-xl font-bold text-white text-sm flex items-center justify-center gap-2 transition-all duration-200 active:scale-95 disabled:opacity-70"
+                  style={{ background: "linear-gradient(135deg,#25d366,#128c7e)", boxShadow: "0 4px 14px rgba(37,211,102,0.35)" }}
+                >
+                  {otpLoading ? (
+                    <>
+                      <span className="w-4 h-4 rounded-full border-2 border-white border-t-transparent anim-spin" />
+                      Sending OTP...
+                    </>
+                  ) : (
+                    <>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                      </svg>
+                      Send OTP on WhatsApp
+                    </>
+                  )}
+                </button>
+              ) : (
+                /* OTP Input area */
+                <div className="space-y-3">
+                  <p className="text-xs text-gray-500">
+                    OTP sent to your WhatsApp. Enter it below to verify.
+                  </p>
+
+                  <div className={otpShake ? "anim-shake" : ""}>
+                    <input
+                      type="tel"
+                      maxLength={6}
+                      value={otpInput}
+                      onChange={(e) => {
+                        setOtpInput(e.target.value.replace(/\D/g, ""));
+                        setOtpError("");
+                      }}
+                      placeholder="· · · · · ·"
+                      className={`otp-box ${otpError ? "error" : ""}`}
+                    />
+                  </div>
+
+                  {otpError && (
+                    <p className="text-xs font-medium text-red-500 flex items-center justify-center gap-1">
+                      <span>⚠</span> {otpError}
+                    </p>
+                  )}
+
+                  <button
+                    onClick={handleVerifyOtp}
+                    disabled={otpLoading || otpInput.length < 4}
+                    className="w-full py-3 rounded-xl font-bold text-white text-sm flex items-center justify-center gap-2 transition-all duration-200 active:scale-95 disabled:opacity-60"
+                    style={{ background: "linear-gradient(135deg,#3b82f6,#1d4ed8)", boxShadow: "0 4px 14px rgba(29,78,216,0.35)" }}
+                  >
+                    {otpLoading ? (
+                      <>
+                        <span className="w-4 h-4 rounded-full border-2 border-white border-t-transparent anim-spin" />
+                        Verifying...
+                      </>
+                    ) : (
+                      <>
+                        <CheckCircle size={15} /> Verify OTP
+                      </>
+                    )}
+                  </button>
+
+                  {/* Resend */}
+                  <div className="text-xs text-gray-400">
+                    {resendTimer > 0 ? (
+                      <span>Resend OTP in <span className="font-bold" style={{ color: "#2563eb" }}>{resendTimer}s</span></span>
+                    ) : (
+                      <button
+                        onClick={handleResend}
+                        className="font-semibold underline transition-colors duration-200"
+                        style={{ color: "#2563eb" }}
+                      >
+                        Resend OTP
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* ── Submit Another (shown after verified) ── */}
+          {otpVerified && (
+            <div className="space-y-3 anim-fade-up" style={{ animationDelay: "350ms" }}>
+              <div
+                className="flex items-center justify-center gap-2 px-4 py-2 rounded-xl mx-auto w-fit"
+                style={{ background: "#f0fdf4", border: "1px solid #bbf7d0" }}
+              >
+                <CheckCircle size={14} style={{ color: "#22c55e" }} />
+                <span className="text-xs font-semibold" style={{ color: "#15803d" }}>WhatsApp number verified</span>
+              </div>
+
+              <button
+                onClick={() => {
+                  setSubmitted(false);
+                  setStep(1);
+                  setOtpSent(false);
+                  setOtpVerified(false);
+                  setOtpInput("");
+                  setOtpError("");
+                  setResendTimer(0);
+                  setData((d) => ({
+                    ...d,
+                    overall:    { rating: null, comment: "" },
+                    delivery:   { rating: null, comment: "" },
+                    content:    { rating: null, comment: "" },
+                    engagement: { rating: null, comment: "" },
+                    extra: "",
+                  }));
+                }}
+                className="w-full px-6 py-2.5 rounded-xl text-sm font-semibold text-white transition-all duration-200 hover:opacity-90 active:scale-95"
+                style={{ background: "linear-gradient(135deg,#3b82f6,#1d4ed8)" }}
+              >
+                Submit another
+              </button>
+            </div>
+          )}
         </div>
       </div>
     );
@@ -298,11 +579,13 @@ export default function FeedbackForm() {
         @keyframes slideInBck { from { opacity:0; transform:translateX(-32px); } to { opacity:1; transform:translateX(0); } }
         @keyframes slideUp    { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
         @keyframes stepPulse  { 0%,100% { box-shadow:0 0 0 0 rgba(37,99,235,.4); } 50% { box-shadow:0 0 0 6px rgba(37,99,235,0); } }
+        @keyframes starPop    { 0% { transform:scale(1); } 40% { transform:scale(1.4); } 100% { transform:scale(1.18); } }
         @keyframes bounceSoft { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-3px); } }
 
-        .animate-fade-in  { animation: fadeIn 0.4s ease both; }
-        .animate-slideIn  { animation: ${animDir === "forward" ? "slideInFwd" : "slideInBck"} 0.35s cubic-bezier(.25,.8,.25,1) both; }
-        .animate-slideUp  { animation: slideUp 0.4s ease both; }
+        .animate-fade-in     { animation: fadeIn 0.4s ease both; }
+        .animate-slideIn     { animation: ${animDir === "forward" ? "slideInFwd" : "slideInBck"} 0.35s cubic-bezier(.25,.8,.25,1) both; }
+        .animate-slideUp     { animation: slideUp 0.4s ease both; }
+        .animate-bounce-soft { animation: bounceSoft 1.8s ease-in-out infinite; }
 
         input, textarea, select { font-family: inherit; }
         input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.5; cursor: pointer; }
@@ -337,7 +620,14 @@ export default function FeedbackForm() {
           position: relative;
           overflow: hidden;
         }
-        .btn-primary:hover { opacity: 0.92; }
+        .btn-primary::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: rgba(255,255,255,0);
+          transition: background 0.2s;
+        }
+        .btn-primary:hover::after { background: rgba(255,255,255,0.1); }
         .btn-primary:active { transform: scale(0.97); }
 
         .btn-ghost {
@@ -379,17 +669,17 @@ export default function FeedbackForm() {
 
           <div className="space-y-4">
             {[
-              { Icon: Shield,     label: "Secure Feedback", sub: "Handled responsibly, used for improvement" },
-              { Icon: Clock,      label: "Takes 2 Minutes", sub: "Fast and focused questions only" },
-              { Icon: TrendingUp, label: "Drives Change",   sub: "Your input improves trainer performance" },
-            ].map(({ Icon, label, sub }, i) => (
+              { Icon: Shield,     label: "Secure Feedback", sub: "Handled responsibly, used for improvement", from: "#eff6ff", to: "#dbeafe", text: "#1d4ed8" },
+              { Icon: Clock,      label: "Takes 2 Minutes", sub: "Fast and focused questions only",           from: "#dbeafe", to: "#bfdbfe", text: "#2563eb" },
+              { Icon: TrendingUp, label: "Drives Change",   sub: "Your input improves trainer performance",  from: "#eff6ff", to: "#dbeafe", text: "#1e40af" },
+            ].map(({ Icon, label, sub, from, to, text }, i) => (
               <div
                 key={label}
                 className="flex items-start gap-3 p-3 rounded-2xl bg-white/80 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 animate-slideUp"
                 style={{ border: "1px solid #dbeafe", animationDelay: `${i * 80}ms` }}
               >
-                <div className="p-2 rounded-lg shrink-0" style={{ background: "linear-gradient(135deg,#eff6ff,#dbeafe)" }}>
-                  <Icon className="w-4 h-4" style={{ color: "#2563eb" }} />
+                <div className="p-2 rounded-lg shrink-0" style={{ background: `linear-gradient(135deg, ${from}, ${to})` }}>
+                  <Icon className="w-4 h-4" style={{ color: text }} />
                 </div>
                 <div>
                   <p className="text-sm font-semibold text-gray-800">{label}</p>
@@ -418,13 +708,10 @@ export default function FeedbackForm() {
             >
               <MessageSquare size={18} className="text-white" />
             </div>
-            <div className="space-y-1.5">
+            <div>
               <h1 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight leading-snug">
                 Training Feedback
               </h1>
-              <p className="text-xs sm:text-sm" style={{ color: "#3b82f6" }}>
-                Help us improve every session
-              </p>
             </div>
           </div>
 
@@ -434,7 +721,7 @@ export default function FeedbackForm() {
 
             <div className="animate-slideIn" key={step}>
 
-              {/* ── Step 1: Session Details ──────────────────────────────── */}
+              {/* ── Step 1 ───────────────────────────────────────────────── */}
               {step === 1 && (
                 <div className="space-y-4 sm:space-y-5 mt-2">
                   <div className="p-3 sm:p-4 rounded-2xl" style={{ background: "linear-gradient(135deg,#eff6ff,#dbeafe)" }}>
@@ -442,19 +729,17 @@ export default function FeedbackForm() {
                       <BookOpen size={18} style={{ color: "#2563eb" }} />
                       Session Details
                     </h3>
-                    <p className="text-gray-500 text-xs sm:text-sm mt-0.5">
-                      Confirm the details of your training session.
-                    </p>
+                    <p className="text-gray-500 text-xs sm:text-sm mt-0.5">Confirm the details of your training session.</p>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                     {[
-                      { icon: User,      label: "Reviewer name",  key: "reviewer", type: "text", placeholder: "Your name" },
-                      { icon: User,      label: "Trainer name",   key: "trainer",  type: "text", placeholder: "Trainer name" },
-                      { icon: Building2, label: "Company",        key: "company",  type: "text", placeholder: "Your company" },
-                      { icon: MapPin,    label: "City",           key: "city",     type: "text", placeholder: "City" },
-                      { icon: Calendar,  label: "Session date",   key: "date",     type: "date", placeholder: "" },
-                      { icon: BookOpen,  label: "Topic / module", key: "topic",    type: "text", placeholder: "e.g. Leadership basics" },
+                      { icon: User,           label: "Reviewer Name",        key: "reviewer",    type: "text", placeholder: "Your name" },
+                      { icon: User,           label: "Training By",          key: "trainer",     type: "text", placeholder: "Trainer name" },
+                      { icon: Calendar,       label: "Session Date",         key: "sessionDate", type: "date", placeholder: "" },
+                      { icon: MapPin,         label: "Your City",            key: "city",        type: "text", placeholder: "Your City" },
+                      { icon: MessageSquare,  label: "Your WhatsApp Number", key: "whatsapp",    type: "text", placeholder: "e.g. +91 9876543210" },
+                      { icon: BookOpen,       label: "Topic / Module",       key: "topic",       type: "text", placeholder: "e.g. Leadership basics" },
                     ].map(({ icon: Icon, label, key, type, placeholder }, i) => (
                       <div key={key} className="animate-slideUp" style={{ animationDelay: `${i * 60}ms` }}>
                         <label className="text-xs font-bold tracking-widest uppercase flex items-center gap-1.5 mb-1.5" style={{ color: "#64748b" }}>
@@ -474,53 +759,26 @@ export default function FeedbackForm() {
                 </div>
               )}
 
-              {/* ── Step 2: Ratings (inline stars + comment always visible) ─ */}
+              {/* ── Step 2 ───────────────────────────────────────────────── */}
               {step === 2 && (
-                <div className="space-y-3 mt-2">
-                  <RatingRow
-                    icon={BarChart2}
-                    title="Overall Feedback"
-                    // description="How was the session overall?"
-                    rating={data.overall.rating}
-                    comment={data.overall.comment}
-                    onRating={(v) => setSection("overall", "rating", v)}
-                    onComment={(v) => setSection("overall", "comment", v)}
-                    delay={0}
-                  />
-                  <RatingRow
-                    icon={Headphones}
-                    title="Communication & Delivery"
-                    // description="How clearly did the trainer communicate?"
-                    rating={data.delivery.rating}
-                    comment={data.delivery.comment}
-                    onRating={(v) => setSection("delivery", "rating", v)}
-                    onComment={(v) => setSection("delivery", "comment", v)}
-                    delay={60}
-                  />
-                  <RatingRow
-                    icon={BookOpen}
-                    title="Training Content"
-                    // description="Was the material relevant and well structured?"
-                    rating={data.content.rating}
-                    comment={data.content.comment}
-                    onRating={(v) => setSection("content", "rating", v)}
-                    onComment={(v) => setSection("content", "comment", v)}
-                    delay={120}
-                  />
-                  <RatingRow
-                    icon={Users}
-                    title="Session Engagement Level"
-                    // description="How engaging and interactive was the session?"
-                    rating={data.engagement.rating}
-                    comment={data.engagement.comment}
-                    onRating={(v) => setSection("engagement", "rating", v)}
-                    onComment={(v) => setSection("engagement", "comment", v)}
-                    delay={180}
-                  />
+                <div className="space-y-4 mt-2 animate-slideUp">
+                  <div className="p-3 sm:p-4 rounded-2xl" style={{ background: "linear-gradient(135deg,#eff6ff,#dbeafe)" }}>
+                    <h3 className="font-bold text-gray-800 text-base sm:text-lg flex items-center gap-2">
+                      <BarChart2 size={18} style={{ color: "#2563eb" }} />
+                      Rate your session
+                    </h3>
+                    <p className="text-gray-500 text-xs sm:text-sm mt-0.5">Tap each category to expand and rate. All are optional.</p>
+                  </div>
+                  <div className="space-y-3">
+                    <CompactRatingRow icon={BarChart2}  title="Overall impression" description="How was the session overall?"                    rating={data.overall.rating}    comment={data.overall.comment}    onRating={(v) => setSection("overall",    "rating", v)} onComment={(v) => setSection("overall",    "comment", v)} delay={0}   />
+                    <CompactRatingRow icon={Headphones} title="Delivery"           description="How clearly did the trainer communicate?"       rating={data.delivery.rating}   comment={data.delivery.comment}   onRating={(v) => setSection("delivery",   "rating", v)} onComment={(v) => setSection("delivery",   "comment", v)} delay={60}  />
+                    <CompactRatingRow icon={BookOpen}   title="Content quality"    description="Was the material relevant and well structured?" rating={data.content.rating}    comment={data.content.comment}    onRating={(v) => setSection("content",    "rating", v)} onComment={(v) => setSection("content",    "comment", v)} delay={120} />
+                    <CompactRatingRow icon={Users}      title="Engagement"         description="How engaging and interactive was the session?"  rating={data.engagement.rating} comment={data.engagement.comment} onRating={(v) => setSection("engagement", "rating", v)} onComment={(v) => setSection("engagement", "comment", v)} delay={180} />
+                  </div>
                 </div>
               )}
 
-              {/* ── Step 3: Review & Submit ──────────────────────────────── */}
+              {/* ── Step 3 ───────────────────────────────────────────────── */}
               {step === 3 && (
                 <div className="space-y-5 sm:space-y-6 mt-2 animate-slideUp">
                   <div className="p-3 sm:p-4 rounded-2xl flex items-start gap-3" style={{ background: "linear-gradient(135deg,#eff6ff,#dbeafe)" }}>
@@ -528,24 +786,21 @@ export default function FeedbackForm() {
                       <CheckCircle size={18} style={{ color: "#2563eb" }} />
                     </div>
                     <div>
-                      <h3 className="font-bold text-gray-800 text-base sm:text-lg">Review your feedback</h3>
+                      <h3 className="font-bold text-gray-800 text-base sm:text-lg">Review Before Final Submission</h3>
                       <p className="text-gray-500 text-xs sm:text-sm mt-0.5">Check everything looks good before submitting.</p>
                     </div>
                   </div>
 
-                  {/* Session info summary */}
                   <div className="rounded-2xl overflow-hidden" style={{ border: "1px solid #bfdbfe" }}>
-                    <p className="text-[10px] font-bold uppercase tracking-widest px-3 py-2" style={{ background: "#dbeafe", color: "#1d4ed8" }}>
-                      Session info
-                    </p>
+                    <p className="text-[10px] font-bold uppercase tracking-widest px-3 py-2" style={{ background: "#dbeafe", color: "#1d4ed8" }}>Session info</p>
                     <div className="p-3 grid grid-cols-2 gap-2">
                       {[
-                        { label: "Reviewer", value: data.reviewer },
-                        { label: "Trainer",  value: data.trainer },
-                        { label: "Company",  value: data.company },
-                        { label: "City",     value: data.city },
-                        { label: "Date",     value: data.date },
-                        { label: "Topic",    value: data.topic },
+                        { label: "Reviewer",     value: data.reviewer },
+                        { label: "Training By",  value: data.trainer },
+                        { label: "Session Date", value: data.sessionDate },
+                        { label: "Your City",    value: data.city },
+                        { label: "WhatsApp No.", value: data.whatsapp },
+                        { label: "Topic",        value: data.topic },
                       ].map(({ label, value }) => (
                         <div key={label} className="text-xs">
                           <span className="text-gray-400 font-semibold">{label}: </span>
@@ -555,11 +810,8 @@ export default function FeedbackForm() {
                     </div>
                   </div>
 
-                  {/* Ratings summary */}
                   <div className="rounded-2xl overflow-hidden" style={{ border: "1px solid #bfdbfe" }}>
-                    <p className="text-[10px] font-bold uppercase tracking-widest px-3 py-2" style={{ background: "#dbeafe", color: "#1d4ed8" }}>
-                      Your ratings
-                    </p>
+                    <p className="text-[10px] font-bold uppercase tracking-widest px-3 py-2" style={{ background: "#dbeafe", color: "#1d4ed8" }}>Your ratings</p>
                     <div className="p-2">
                       {[
                         { label: "Overall",    rating: data.overall.rating },
@@ -572,16 +824,12 @@ export default function FeedbackForm() {
                     </div>
                   </div>
 
-                  {/* Average */}
                   {avg !== null && (
-                    <div
-                      className="flex items-center justify-between p-3 sm:p-4 rounded-2xl animate-slideUp"
-                      style={{ background: "linear-gradient(135deg,#dbeafe,#bfdbfe)", border: "1px solid #93c5fd" }}
-                    >
+                    <div className="flex items-center justify-between p-3 sm:p-4 rounded-2xl animate-slideUp" style={{ background: "linear-gradient(135deg,#dbeafe,#bfdbfe)", border: "1px solid #93c5fd" }}>
                       <span className="font-bold text-sm" style={{ color: "#1d4ed8" }}>Average score</span>
                       <div className="flex items-center gap-2">
                         <div className="flex gap-0.5">
-                          {[1, 2, 3, 4, 5].map((s) => (
+                          {[1,2,3,4,5].map((s) => (
                             <Star key={s} size={14} fill={s <= Math.round(avg) ? "#1d4ed8" : "none"} stroke="#1d4ed8" />
                           ))}
                         </div>
@@ -590,7 +838,6 @@ export default function FeedbackForm() {
                     </div>
                   )}
 
-                  {/* Extra comments */}
                   <div>
                     <label className="text-xs font-bold tracking-widest text-gray-400 uppercase flex items-center gap-1.5 mb-2">
                       <Edit2 size={12} /> Any other comments?
@@ -632,7 +879,14 @@ export default function FeedbackForm() {
                 </button>
               ) : (
                 <button
-                  onClick={() => setSubmitted(true)}
+                  onClick={() => {
+                    setSubmitted(true);
+                    setOtpSent(false);
+                    setOtpVerified(false);
+                    setOtpInput("");
+                    setOtpError("");
+                    setResendTimer(0);
+                  }}
                   className="btn-primary flex items-center gap-1.5 px-5 sm:px-6 py-2.5 rounded-xl font-semibold text-sm transition-all duration-200 shadow-md"
                   style={{ boxShadow: "0 4px 14px rgba(29,78,216,0.35)" }}
                 >
